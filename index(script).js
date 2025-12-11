@@ -2,6 +2,66 @@
 // DIONYSUS CELLAR - JavaScript
 // ===============================
 
+// === МОДАЛЬНІ ВІКНА РЕГІОНІВ ===
+const regionButtons = document.querySelectorAll('.legend-link[data-region]');
+const modals = document.querySelectorAll('.region-modal');
+const modalCloses = document.querySelectorAll('.modal-close');
+const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+// Відкриття модального вікна
+regionButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const regionName = button.getAttribute('data-region');
+        const modal = document.getElementById(`modal-${regionName}`);
+        
+        if (modal) {
+            // Блокуємо прокрутку body
+            document.body.style.overflow = 'hidden';
+            
+            // Показуємо модальне вікно
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+    });
+});
+
+// Закриття модального вікна через кнопку X
+modalCloses.forEach(closeBtn => {
+    closeBtn.addEventListener('click', () => {
+        closeModal(closeBtn.closest('.region-modal'));
+    });
+});
+
+// Закриття модального вікна через оверлей
+modalOverlays.forEach(overlay => {
+    overlay.addEventListener('click', () => {
+        closeModal(overlay.closest('.region-modal'));
+    });
+});
+
+// Закриття модального вікна через ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.region-modal.active');
+        if (activeModal) {
+            closeModal(activeModal);
+        }
+    }
+});
+
+// Функція закриття модального вікна
+function closeModal(modal) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        // Відновлюємо прокрутку body
+        document.body.style.overflow = '';
+    }, 400);
+}
+
 // === ПЛАВНА ПРОКРУТКА ДО СЕКЦІЙ ===
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
