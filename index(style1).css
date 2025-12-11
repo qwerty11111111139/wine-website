@@ -1,0 +1,1082 @@
+/* === ЗАГАЛЬНІ СТИЛІ === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Кольори */
+    --gold: #D4AF37;
+    --gold-hover: #F0D058;
+    --dark-bg: #0a0a0a;
+    --dark-secondary: #1a1a1a;
+    --dark-card: #151515;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+    
+    /* Шрифти */
+    --font-primary: 'Playfair Display', serif;
+    --font-secondary: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: var(--font-secondary);
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* === ХЕДЕР ТА НАВІГАЦІЯ === */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Логотип */
+.logo {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: var(--gold);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--gold-hover);
+}
+
+/* Навігаційне меню */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 3rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* Золотиста підсвітка для навігації */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--gold);
+}
+
+.nav-link:hover {
+    color: var(--gold);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Права частина навігації */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    color: var(--gold);
+    transform: scale(1.1);
+}
+
+/* Кнопка входу */
+.login-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.6rem 1.8rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.login-btn:hover {
+    background: var(--gold);
+    color: var(--dark-bg);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+/* === ГОЛОВНИЙ БАНЕР === */
+.hero-section {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Тут вставте фонове зображення виноградника */
+    background: url('images/vineyard-hero.jpg') center/cover no-repeat;
+    margin-top: 80px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 2rem;
+}
+
+.hero-subtitle {
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    font-family: var(--font-primary);
+    font-size: 5rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* === СЕКЦІЯ ФІЛОСОФІЇ === */
+.philosophy-section {
+    padding: 8rem 3rem;
+    background: var(--dark-bg);
+}
+
+.section-title {
+    font-family: var(--font-primary);
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 5rem;
+    font-weight: 400;
+}
+
+.philosophy-cards {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+}
+
+/* Карточки філософії */
+.philosophy-card {
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.philosophy-card:hover {
+    transform: translateY(-10px);
+}
+
+.card-icon {
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+/* Золотиста підсвітка для іконок */
+.philosophy-card:hover .card-icon {
+    filter: drop-shadow(0 0 15px var(--gold));
+    transform: scale(1.1);
+}
+
+.card-icon svg {
+    width: 60px;
+    height: 60px;
+}
+
+.card-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.card-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* === СЕКЦІЇ З ВИНОСОМ ВИН === */
+.wine-showcase {
+    padding: 6rem 3rem;
+    background: var(--dark-secondary);
+}
+
+.showcase-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+.showcase-container.reverse {
+    grid-template-columns: 1fr 1fr;
+}
+
+.showcase-container.reverse .showcase-content {
+    order: 1;
+}
+
+.showcase-container.reverse .showcase-image {
+    order: 2;
+}
+
+/* Зображення вина */
+.showcase-image {
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.showcase-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+
+/* Золотиста підсвітка для зображень */
+.showcase-image:hover {
+    transform: scale(1.05);
+}
+
+.showcase-image:hover img {
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+}
+
+.showcase-label {
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.showcase-title {
+    font-family: var(--font-primary);
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+.showcase-description {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+}
+
+/* Кнопка CTA */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.cta-button:hover {
+    background: var(--gold);
+    color: var(--dark-bg);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    transform: translateY(-3px);
+}
+
+.button-arrow {
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover .button-arrow {
+    transform: translateX(5px);
+}
+
+/* === СЕКЦІЯ ПРОДУКТІВ === */
+.products-section {
+    padding: 8rem 3rem;
+    background: var(--dark-bg);
+}
+
+/* Фільтри продуктів */
+.product-filters {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0 5rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--text-muted);
+    color: var(--text-secondary);
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Сітка продуктів */
+.products-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+}
+
+/* Карточка продукту */
+.product-card {
+    background: var(--dark-card);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+/* Золотиста підсвітка для карточок */
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+}
+
+.product-image {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: var(--dark-secondary);
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+.product-name {
+    padding: 1.5rem 1.5rem 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.product-origin {
+    padding: 0 1.5rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* === СЕКЦІЯ З ВИНОГРАДНИКАМИ === */
+.vineyard-section {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Тут вставте фонове зображення виноградників */
+    background: url('images/vineyard-background.jpg') center/cover no-repeat;
+    margin: 4rem 0;
+}
+
+.vineyard-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.vineyard-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.vineyard-title {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+.vineyard-description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* === СЕКЦІЯ СОНЯЧНОГО ВИНА === */
+.sunshine-wine-section {
+    padding: 8rem 3rem;
+    background: var(--dark-bg);
+}
+
+.sunshine-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.sunshine-title {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.sunshine-image {
+    position: relative;
+    text-align: center;
+}
+
+.sunshine-image img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+    transition: all 0.5s ease;
+}
+
+.sunshine-image:hover img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.5));
+}
+
+/* Ціновий тег */
+.price-tag {
+    position: absolute;
+    bottom: -20px;
+    right: 20%;
+    background: var(--dark-card);
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--gold);
+}
+
+.price-old {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    margin-right: 1rem;
+    font-size: 1.1rem;
+}
+
+.price-current {
+    color: var(--gold);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* === СЕКЦІЯ ПРИВАТНОГО КЛУБУ === */
+.private-club-section {
+    padding: 8rem 3rem;
+    background: var(--dark-secondary);
+}
+
+.club-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+.club-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+
+.club-image:hover img {
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.4);
+}
+
+.club-title {
+    font-family: var(--font-primary);
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+/* Переваги клубу */
+.club-benefits {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.benefit-item {
+    width: 50px;
+    height: 50px;
+}
+
+.benefit-icon {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.benefit-icon:hover {
+    background: var(--gold);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+.club-description {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+}
+
+/* === СЕКЦІЯ ЛЕГЕНД === */
+.legends-section {
+    padding: 8rem 3rem;
+    background: var(--dark-bg);
+}
+
+.legends-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+/* Карточка легенди */
+.legend-card {
+    background: var(--dark-card);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.legend-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+}
+
+.legend-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.legend-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.legend-card:hover .legend-image img {
+    transform: scale(1.1);
+}
+
+.legend-region {
+    display: block;
+    padding: 1.5rem 2rem 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.legend-title {
+    padding: 0.5rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.legend-description {
+    padding: 0 2rem 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.legend-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 2rem 2rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.legend-link:hover {
+    gap: 1rem;
+}
+
+.link-arrow {
+    transition: transform 0.3s ease;
+}
+
+.legend-link:hover .link-arrow {
+    transform: translateX(5px);
+}
+
+/* === СЕКЦІЯ ПІДПИСКИ === */
+.newsletter-section {
+    padding: 6rem 3rem;
+    background: var(--dark-secondary);
+    text-align: center;
+}
+
+.newsletter-title {
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    font-weight: 400;
+}
+
+.newsletter-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: var(--dark-card);
+    border: 1px solid var(--text-muted);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.newsletter-btn {
+    padding: 1rem 2.5rem;
+    background: var(--gold);
+    border: none;
+    color: var(--dark-bg);
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.newsletter-btn:hover {
+    background: var(--gold-hover);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+/* === ФУТЕР === */
+.footer {
+    padding: 3rem;
+    background: var(--dark-bg);
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-logo {
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+}
+
+.social-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.social-link {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    color: var(--gold);
+    transform: translateY(-3px);
+}
+
+/* === МОДАЛЬНІ ВІКНА РЕГІОНІВ === */
+.region-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.region-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+/* Оверлей модального вікна */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
+}
+
+/* Контент модального вікна */
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    height: 85vh;
+    background: var(--dark-card);
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+    animation: modalSlideIn 0.5s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(50px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Кнопка закриття */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(212, 175, 55, 0.2);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: var(--gold);
+    color: var(--dark-bg);
+    transform: rotate(90deg);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Фонове зображення модального вікна */
+.modal-background {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4);
+}
+
+.modal-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(10, 10, 10, 0.9));
+}
+
+/* Інформаційна панель модального вікна */
+.modal-info {
+    flex: 1;
+    padding: 3rem 2.5rem;
+    background: rgba(10, 10, 10, 0.95);
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Скролбар для модального вікна */
+.modal-info::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-info::-webkit-scrollbar-track {
+    background: var(--dark-secondary);
+}
+
+.modal-info::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 3px;
+}
+
+/* Заголовок регіону в модальному вікні */
+.modal-region-title {
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Портрет виноградаря */
+.modal-portrait {
+    width: 120px;
+    height: 150px;
+    margin: 0 auto 1.5rem;
+    border: 2px solid var(--gold);
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.modal-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.3);
+}
+
+/* Ім'я виноградаря */
+.modal-winemaker {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.modal-years {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.3rem;
+}
+
+/* Типи виноградних лоз */
+.modal-vineyards {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.modal-dots {
+    color: var(--gold);
+    opacity: 0.3;
+}
+
+/* Підзаголовок */
+.modal-subtitle {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Опис регіону */
+.modal-description {
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.modal-description p {
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    text-align: justify;
+}
+
+/* Кнопка "ДОСЛІДИТИ РЕГІОН" як button */
+.legend-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 2rem 2rem;
+    color: var(--gold);
+    background: transparent;
+    border: none;
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: var(--font-secondary);
+}
+
+.legend-link:hover {
+    gap: 1rem;
+    color: var(--gold-hover);
+}
+
+/* === АДАПТИВНІСТЬ === */
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .legends-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .philosophy-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .showcase-container,
+    .showcase-container.reverse,
+    .club-container,
+    .sunshine-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-menu {
+        display: none;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .legends-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+}
