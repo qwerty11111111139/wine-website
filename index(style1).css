@@ -1037,6 +1037,78 @@ body {
     color: var(--gold-hover);
 }
 
+/* === ФОРМИ В МОДАЛЬНИХ ВІКНАХ === */
+.invite-form {
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 5px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: var(--font-secondary);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-submit-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--gold);
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-secondary);
+    margin-top: 1rem;
+}
+
+.form-submit-btn:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.form-submit-btn:active {
+    transform: translateY(0);
+}
+
 /* === АДАПТИВНІСТЬ === */
 @media (max-width: 1024px) {
     .products-grid {

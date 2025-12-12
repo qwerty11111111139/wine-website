@@ -17,7 +17,7 @@
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">ГОЛОВНА</a></li>
                 <li><a href="wine.html" class="nav-link">ВИНО</a></li>
-                <li><a href="#" class="nav-link">ПРО НАС</a></li>
+                <li><a href="about.html" class="nav-link">ПРО НАС</a></li>
                 <li><a href="#" class="nav-link">КОНТАКТИ</a></li>
             </ul>
         I    
@@ -407,6 +407,61 @@
                     <p>У 1858 році він збудував першу кам'яну "бодегу", де ввів революційний метод витримки. Його вина стали настільки популярними, що їх почали підробляти. У відповідь Маркіз обтягнув кожну пляшку золотою металевою сіткою — символом недоторканності королівського напою.</p>
                     
                     <p>Ця сітка стала знаком якості, а його підвали, які називають "Собором", і досі зберігають пляшки 19-го століття. Це вино не просто п'ють — перед ним схиляють голову, як перед стихією вогню, закутою у скло.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Отримати запрошення -->
+    <div class="region-modal" id="modal-invite">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Запрошення фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">ОТРИМАТИ ЗАПРОШЕННЯ</h2>
+                
+                <div class="modal-description">
+                    <p>Приєднуйтесь до ексклюзивного Приватного Клубу Dionysus Cellar. Заповніть форму нижче, і наші спеціалісти розглянуть вашу кандидатуру протягом 48 годин.</p>
+                    
+                    <form class="invite-form">
+                        <div class="form-group">
+                            <label for="invite-name">Ваше ім'я:</label>
+                            <input type="text" id="invite-name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="invite-email">Email:</label>
+                            <input type="email" id="invite-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="invite-phone">Телефон:</label>
+                            <input type="tel" id="invite-phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="experience">Досвід у виноробстві:</label>
+                            <select id="experience" name="experience" required>
+                                <option value="">-- Оберіть рівень --</option>
+                                <option value="beginner">Початківець</option>
+                                <option value="intermediate">Середній</option>
+                                <option value="advanced">Досвідчений</option>
+                                <option value="expert">Експерт</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Чому ви хочете приєднатися?</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Розкажіть про себе..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">НАДІСЛАТИ ЗАЯВКУ</button>
+                    </form>
                 </div>
             </div>
         </div>

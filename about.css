@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    overflow-x: hidden;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background-color: #000;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.logo {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #d4af37;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 50px;
+    margin: 0;
+}
+
+nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    font-weight: 300;
+}
+
+nav a:hover {
+    color: #d4af37;
+}
+
+.header-divider {
+    width: 1px;
+    height: 20px;
+    background-color: rgba(212, 175, 55, 0.3);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.search-icon {
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: color 0.3s;
+    font-size: 18px;
+}
+
+.search-icon:hover {
+    color: #d4af37;
+}
+
+.login-button {
+    padding: 10px 30px;
+    background-color: transparent;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.login-button:hover {
+    background-color: #d4af37;
+    color: #000;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('images/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-subtitle {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #d4af37;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.hero-description {
+    font-size: 14px;
+    color: #b0b0b0;
+    letter-spacing: 1px;
+}
+
+/* Section Title */
+.section {
+    padding: 100px 50px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: #d4af37;
+    margin-bottom: 80px;
+    text-transform: uppercase;
+}
+
+/* About Section */
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.about-text h3 {
+    font-size: 24px;
+    font-weight: 300;
+    color: #d4af37;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.about-text p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+.about-image {
+    width: 100%;
+    height: 500px;
+    background: url('images/vineyard.jpg') center/cover;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.about-image:hover {
+    border-color: #d4af37;
+}
+
+.about-image.selected {
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Gallery Section */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    aspect-ratio: 1;
+    background: #1a1a1a;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.gallery-item[data-image="2"] {
+    background-image: url('images/harvest.jpg');
+}
+
+.gallery-item[data-image="3"] {
+    background-image: url('images/grapes.jpg');
+}
+
+.gallery-item[data-image="4"] {
+    background-image: url('images/barrels.jpg');
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item:hover {
+    border-color: #d4af37;
+    transform: scale(1.02);
+}
+
+.gallery-item.selected {
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Values Section */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.value-item {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.value-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 20px;
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+    font-size: 24px;
+}
+
+.value-title {
+    font-size: 16px;
+    color: #d4af37;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.value-description {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    padding: 80px 50px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 18px 50px;
+    background-color: transparent;
+    color: #d4af37;
+    border: 2px solid #d4af37;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: #d4af37;
+    color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    nav ul {
+        gap: 20px;
+    }
+}

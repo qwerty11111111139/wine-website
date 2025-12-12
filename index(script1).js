@@ -21,9 +21,7 @@ regionButtons.forEach(button => {
             
             // Показуємо модальне вікно
             modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
+            modal.classList.add('active');
         }
     });
 });
@@ -91,6 +89,27 @@ window.addEventListener('scroll', () => {
     }
     
     lastScroll = currentScroll;
+});
+
+// === ДОДАТКОВІ МОДАЛЬНІ ВІКНА ===
+const modalButtons = document.querySelectorAll('[data-modal]');
+
+// Відкриття додаткових модальних вікон
+modalButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modalName = button.getAttribute('data-modal');
+        const modal = document.getElementById(`modal-${modalName}`);
+        
+        if (modal) {
+            // Блокуємо прокрутку body
+            document.body.style.overflow = 'hidden';
+            
+            // Показуємо модальне вікно
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
+    });
 });
 
 // === ФІЛЬТРАЦІЯ ПРОДУКТІВ ===
@@ -189,6 +208,39 @@ if (newsletterForm) {
         // Симуляція відправки форми
         showNotification('Дякуємо за підписку! Перевірте вашу пошту.', 'success');
         newsletterInput.value = '';
+    });
+}
+
+// === ВАЛІДАЦІЯ ФОРМИ ЗАПРОШЕННЯ ===
+const inviteForm = document.querySelector('.invite-form');
+
+if (inviteForm) {
+    inviteForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(inviteForm);
+        const data = Object.fromEntries(formData);
+        
+        // Валідація
+        if (!data.name || !data.email || !data.phone || !data.experience) {
+            showNotification('Будь ласка, заповніть всі обов\'язкові поля', 'error');
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email)) {
+            showNotification('Будь ласка, введіть коректну email адресу', 'error');
+            return;
+        }
+        
+        // Симуляція відправки
+        showNotification('Дякуємо за заявку! Ми розглянемо її протягом 48 годин.', 'success');
+        inviteForm.reset();
+        // Закрити модальне вікно після успішної відправки
+        setTimeout(() => {
+            const modal = document.getElementById('modal-invite');
+            if (modal) closeModal(modal);
+        }, 2000);
     });
 }
 
