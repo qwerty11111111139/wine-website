@@ -1038,7 +1038,8 @@ body {
 }
 
 /* === ФОРМИ В МОДАЛЬНИХ ВІКНАХ === */
-.invite-form {
+.invite-form,
+.purchase-form {
     margin-top: 2rem;
 }
 

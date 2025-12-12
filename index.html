@@ -110,8 +110,8 @@
                     забезпечити ідеальний баланс між та оксамитового 
                     смаку.
                 </p>
-                <a href="#" class="cta-button">
-                    SHOP NOW
+                <a href="#" class="cta-button" data-modal="buy">
+                    КУПИТИ ЗАРАЗ
                     <span class="button-arrow">→</span>
                 </a>
             </div>
@@ -129,8 +129,8 @@
                     найдавніших лоз мастку, розкриваючись багатими 
                     танінами та травами, оксамитовим фіналом
                 </p>
-                <a href="#" class="cta-button">
-                    SHOP NOW
+                <a href="#" class="cta-button" data-modal="buy">
+               КУПИТИ ЗАРАЗ
                     <span class="button-arrow">→</span>
                 </a>
             </div>
@@ -251,7 +251,7 @@
                     пляшка — шанувань. відкриттів для вас.
                 </p>
                 
-                <a href="#" class="cta-button club-btn">
+                <a href="#" class="cta-button club-btn" data-modal="invite">
                     ОТРИМАТИ ЗАПРОШЕННЯ
                     <span class="button-arrow">→</span>
                 </a>
@@ -461,6 +461,62 @@
                         </div>
                         
                         <button type="submit" class="form-submit-btn">НАДІСЛАТИ ЗАЯВКУ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Купити зараз -->
+    <div class="region-modal" id="modal-buy">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/Chervone vyno Teliani Valley.jpg" alt="Купити вино фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">КУПИТИ ЗАРАЗ</h2>
+                
+                <div class="modal-description">
+                    <p>Оберіть бажане вино та заповніть форму для оформлення замовлення. Наші спеціалісти зв'яжуться з вами протягом 24 годин для підтвердження деталей.</p>
+                    
+                    <form class="purchase-form">
+                        <div class="form-group">
+                            <label for="wine-select">Оберіть вино:</label>
+                            <select id="wine-select" name="wine" required>
+                                <option value="">-- Виберіть вино --</option>
+                                <option value="cabernet">Cabernet Sauvignon</option>
+                                <option value="chardonnay">Vie di Romans Chardonnay</option>
+                                <option value="pavel">Pavel Shvets</option>
+                                <option value="merlot">Grand Merlot</option>
+                                <option value="trinchero">Trinchero</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="quantity">Кількість:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Ваше ім'я:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Телефон:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
                     </form>
                 </div>
             </div>

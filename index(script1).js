@@ -244,6 +244,39 @@ if (inviteForm) {
     });
 }
 
+// === ВАЛІДАЦІЯ ФОРМИ КУПІВЛІ ===
+const purchaseForm = document.querySelector('.purchase-form');
+
+if (purchaseForm) {
+    purchaseForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(purchaseForm);
+        const data = Object.fromEntries(formData);
+        
+        // Валідація
+        if (!data.wine || !data.quantity || !data.name || !data.email || !data.phone) {
+            showNotification('Будь ласка, заповніть всі поля', 'error');
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email)) {
+            showNotification('Будь ласка, введіть коректну email адресу', 'error');
+            return;
+        }
+        
+        // Симуляція відправки
+        showNotification('Дякуємо за замовлення! Ми зв\'яжемося з вами найближчим часом.', 'success');
+        purchaseForm.reset();
+        // Закрити модальне вікно після успішної відправки
+        setTimeout(() => {
+            const modal = document.getElementById('modal-buy');
+            if (modal) closeModal(modal);
+        }, 2000);
+    });
+}
+
 // === ФУНКЦІЯ ПОКАЗУ СПОВІЩЕНЬ ===
 function showNotification(message, type = 'info') {
     // Створюємо елемент сповіщення
