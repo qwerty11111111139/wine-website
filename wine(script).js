@@ -274,4 +274,23 @@ window.addEventListener('scroll', () => {
     }
 });
 
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('like-btn')) {
+        const id = e.target.getAttribute('data-id');
+        const name = e.target.getAttribute('data-name');
+        const img = e.target.getAttribute('data-img');
+        
+        // Get existing favorites from localStorage
+        let favorites = JSON.parse(localStorage.getItem('wineFavorites')) || [];
+        
+        // Check if already added
+        if (!favorites.some(fav => fav.id === id)) {
+            favorites.push({id, name, img});
+            localStorage.setItem('wineFavorites', JSON.stringify(favorites));
+        }
+        
+        alert(`Ваш уподобаний товар "${name}" було переміщено на вкладку уподобані товари`);
+    }
+});
+
 console.log('Wine Collection website loaded successfully!');
