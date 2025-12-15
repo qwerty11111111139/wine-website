@@ -29,7 +29,7 @@
                         <path d="M14 14L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                 </button>
-                <button class="login-btn">УВІЙТИ</button>
+                <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
             </div>
         </nav>
     </header>
@@ -517,6 +517,95 @@
                         </div>
                         
                         <button type="submit" class="form-submit-btn">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Реєстрація -->
+    <div class="region-modal" id="modal-register">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Реєстрація фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">ЗАРЕЄСТРУВАТИСЯ</h2>
+                
+                <div class="modal-description">
+                    <p>Створіть акаунт для доступу до особистого кабінету.</p>
+                    
+                    <form class="register-form">
+                        <div class="form-group">
+                            <label for="register-name">Ваше ім'я:</label>
+                            <input type="text" id="register-name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-email">Email:</label>
+                            <input type="email" id="register-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-phone">Телефон:</label>
+                            <input type="tel" id="register-phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-password">Пароль:</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-confirm-password">Підтвердіть пароль:</label>
+                            <input type="password" id="register-confirm-password" name="confirmPassword" required>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">ЗАРЕЄСТРУВАТИСЯ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+                
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
                     </form>
                 </div>
             </div>

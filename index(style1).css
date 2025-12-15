@@ -145,6 +145,28 @@ body {
     transform: translateY(-2px);
 }
 
+/* Кнопка користувача */
+.user-btn {
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--dark-bg);
+    padding: 0.6rem 1.8rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.user-btn:hover {
+    background: var(--gold-hover);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
 /* === ГОЛОВНИЙ БАНЕР === */
 .hero-section {
     height: 100vh;
@@ -1039,7 +1061,9 @@ body {
 
 /* === ФОРМИ В МОДАЛЬНИХ ВІКНАХ === */
 .invite-form,
-.purchase-form {
+.purchase-form,
+.login-form,
+.register-form {
     margin-top: 2rem;
 }
 
@@ -1110,6 +1134,36 @@ body {
     transform: translateY(0);
 }
 
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.form-register-btn {
+    padding: 0.5rem 1.5rem;
+    background: var(--gold);
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+    font-family: var(--font-secondary);
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+    min-width: 180px;
+    min-height: 44px;
+}
+
+.form-register-btn:hover {
+    background: var(--gold);
+    color: var(--dark-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
 /* === АДАПТИВНІСТЬ === */
 @media (max-width: 1024px) {
     .products-grid {
@@ -1152,4 +1206,46 @@ body {
     .newsletter-form {
         flex-direction: column;
     }
+}
+
+/* === СТИЛІ ДЛЯ ПОВІДОМЛЕНЬ === */
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 10000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    border-left: 4px solid #45a049;
+}
+
+.notification.error {
+    background-color: #f44336;
+    border-left: 4px solid #d32f2f;
+}
+
+.notification.info {
+    background-color: #2196F3;
+    border-left: 4px solid #1976D2;
+}
+
+.notification.warning {
+    background-color: #FF9800;
+    border-left: 4px solid #F57C00;
 }
