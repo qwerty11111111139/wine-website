@@ -578,16 +578,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('api.php?action=register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: data.name,
-                        email: data.email,
-                        phone: data.phone,
-                        password: data.password
+               const response = await fetch('api.php?action=register', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+        password_confirm: data.confirmPassword  // <--- ОСЬ ЦЕЙ РЯДОК МИ ДОДАЛИ!
                     }),
                 });
 
