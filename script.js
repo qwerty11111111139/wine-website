@@ -209,9 +209,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Симуляція відправки форми
-            showNotification('Дякуємо за підписку! Перевірте вашу пошту.', 'success');
-            newsletterInput.value = '';
+            // Відправка на сервер (реальна реалізація)
+            fetch('api.php?action=subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            }).then(r => r.json()).then(data => {
+                if (data && data.success) {
+                    showNotification(data.message || 'Дякуємо за підписку! Перевірте вашу пошту.', 'success');
+                    newsletterInput.value = '';
+                } else {
+                    showNotification(data.message || 'Не вдалося підписатися. Спробуйте пізніше.', 'error');
+                }
+            }).catch(err => {
+                showNotification('Не вдалося звʼязатися із сервером. Спробуйте пізніше.', 'error');
+                console.error('Subscribe error:', err);
+            });
         });
     }
 

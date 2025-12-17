@@ -180,6 +180,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Якщо сторінка відкрита з хешем #modal-N — відкриваємо відповідний модал
+function openModalFromHash() {
+    const h = window.location.hash;
+    if (!h) return;
+    const m = h.match(/#modal-(\d+)/);
+    if (m && m[1]) {
+        setTimeout(() => { // невелика затримка щоб DOM був готовий
+            openModal(m[1]);
+            // прибрати хеш з адреси, щоб при закритті не знову відкривало
+            history.replaceState(null, '', window.location.pathname);
+        }, 120);
+    }
+}
+
+// Відкрити модаль, якщо хеш присутній при завантаженні
+document.addEventListener('DOMContentLoaded', openModalFromHash);
+// І реагувати на зміну хеша під час перебування на сторінці
+window.addEventListener('hashchange', openModalFromHash);
+
 // Анімація появи елементів при скролі
 const observerOptions = {
     threshold: 0.1,
@@ -279,17 +298,52 @@ document.addEventListener('click', function(e) {
         const id = e.target.getAttribute('data-id');
         const name = e.target.getAttribute('data-name');
         const img = e.target.getAttribute('data-img');
-        
-        // Get existing favorites from localStorage
-        let favorites = JSON.parse(localStorage.getItem('wineFavorites')) || [];
-        
-        // Check if already added
-        if (!favorites.some(fav => fav.id === id)) {
-            favorites.push({id, name, img});
-            localStorage.setItem('wineFavorites', JSON.stringify(favorites));
+
+        // Try to read price from surrounding DOM (modal or card)
+        let price = '';
+        const modal = e.target.closest('.modal');
+        if (modal) {
+            const priceEl = modal.querySelector('.modal-price');
+            if (priceEl) price = priceEl.textContent.trim();
         }
-        
-        alert(`Ваш уподобаний товар "${name}" було переміщено на вкладку уподобані товари`);
+        if (!price) {
+            const card = e.target.closest('.product-card') || e.target.closest('.wine-card');
+            if (card) {
+                const priceEl = card.querySelector('.wine-price') || card.querySelector('.price-current');
+                if (priceEl) price = priceEl.textContent.trim();
+            }
+        }
+
+        // Attempt to save to server; on failure or not-logged-in, fall back to localStorage
+        fetch('api.php?action=add_favorite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: id, name: name, img: img, price: price })
+        }).then(r => r.json()).then(data => {
+            if (data && data.success) {
+                alert(data.message || `Додано в обране: ${name}`);
+            } else {
+                // not logged in or other server-side rejection -> fallback to localStorage
+                let favorites = JSON.parse(localStorage.getItem('wineFavorites')) || [];
+                if (!favorites.some(fav => fav.id === id)) {
+                    favorites.push({ id, name, img, price });
+                    localStorage.setItem('wineFavorites', JSON.stringify(favorites));
+                }
+                if (data && (data.error === 'not_logged_in' || data.message === 'not_logged_in')) {
+                    alert(`Ви не увійшли — товар "${name}" збережено локально в уподобаних.`);
+                } else {
+                    alert(`Ваш уподобаний товар "${name}" збережено локально.`);
+                }
+            }
+        }).catch(err => {
+            // Network error -> fallback
+            let favorites = JSON.parse(localStorage.getItem('wineFavorites')) || [];
+            if (!favorites.some(fav => fav.id === id)) {
+                favorites.push({ id, name, img, price });
+                localStorage.setItem('wineFavorites', JSON.stringify(favorites));
+            }
+            alert(`Не вдалося зберегти на сервері. Товар "${name}" збережено локально.`);
+        });
     }
 });
 

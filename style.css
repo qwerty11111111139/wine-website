@@ -175,7 +175,7 @@ body {
     align-items: center;
     justify-content: center;
     /* Тут вставте фонове зображення виноградника */
-    background: url('images/vineyard-hero.jpg') center/cover no-repeat;
+    background: url('img1/vineyard-hero.jpg') center/cover no-repeat;
     margin-top: 80px;
 }
 
@@ -479,7 +479,7 @@ body {
     align-items: center;
     justify-content: center;
     /* Тут вставте фонове зображення виноградників */
-    background: url('images/vineyard-background.jpg') center/cover no-repeat;
+    background: url('img1/vineyard-background.jpg') center/cover no-repeat;
     margin: 4rem 0;
 }
 
