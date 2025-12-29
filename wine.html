@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Колекція Вин</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_wine.css">
 </head>
 <body>
@@ -16,9 +17,28 @@
                     <a href="index.html">Головна</a>
                     <a href="wine.html">Вино</a>
                     <a href="about.html">Про нас</a>
-                    <a href="cabinet.html">Контакти</a>
-                </nav>
-                <button class="btn-login">Увійти</button>
+                    <a href="Contacts.html">Контакти</a>
+                </nav>                <div class="search-wrapper">
+                    <select id="categoryFilter" class="header-category-select" aria-label="Фільтр за категорією">
+                        <option value="">Всі</option>
+                        <option value="червоне">Червоне</option>
+                        <option value="біле">Біле</option>
+                        <option value="ігристе">Ігристе</option>
+                        <option value="кріплене червоне">Кріплене червоне</option>
+                        <option value="біле десертне">Біле десертне</option>
+                    </select>
+                    <button type="button" id="resetFilters" class="filter-reset" title="Очистити фільтри">✕</button>
+
+                    <form id="headerSearchForm" class="header-search-form" role="search">
+                        <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                        <button type="submit" class="header-search-btn" aria-label="Пошук">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>                <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
             </div>
         </div>
     </header>
@@ -65,7 +85,7 @@
             <h2 class="section-title">Наша колекція</h2>
             <div class="grid">
                 <!-- Вино 1 -->
-                <div class="wine-card" onclick="openModal(1)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(1)">
                     <div class="wine-image">
                         <img src="img1/Romanée-Conti.jpg" alt="Wine 1">
                     </div>
@@ -77,7 +97,7 @@
                 </div>
 
                 <!-- Вино 2 -->
-                <div class="wine-card" onclick="openModal(2)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(2)">
                     <div class="wine-image">
                         <img src="img1/Pétrus.jpg" alt="Wine 2">
                     </div>
@@ -88,7 +108,7 @@
                 </div>
 
                 <!-- Вино 3 -->
-                <div class="wine-card" onclick="openModal(3)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(3)">
                     <div class="wine-image">
                         <img src="img1/Screaming Eagle.jpg" alt="Wine 3">
                     </div>
@@ -99,7 +119,7 @@
                 </div>
 
                 <!-- Вино 4 -->
-                <div class="wine-card" onclick="openModal(4)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(4)">
                     <div class="wine-image">
                         <img src="img1/Château Margaux.jpg" alt="Wine 4">
                     </div>
@@ -110,19 +130,18 @@
                 </div>
 
                 <!-- Вино 5 -->
-                <div class="wine-card" onclick="openModal(5)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(5)">
                     <div class="wine-image">
                         <img src="img1/Chateau Lafite Rothshild.jpg" alt="Wine 5">
                     </div>
                     <div class="wine-info">
                         <h3> Chateau Lafite Rothshild</h3>
                         <p class="wine-type">Франція. Символ багатства та статусу вже понад 150 років.</p>
-                        <p class="wine-price">₴ 650</p>
                     </div>
                 </div>
 
                 <!-- Вино 6 -->
-                <div class="wine-card" onclick="openModal(6)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(6)">
                     <div class="wine-image">
                         <img src="img1/Penfolds Grange.jpg" alt="Wine 6">
                     </div>
@@ -133,7 +152,7 @@
                 </div>
 
                 <!-- Вино 7 -->
-                <div class="wine-card" onclick="openModal(7)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(7)">
                     <div class="wine-image">
                         <img src="img1/Masseto.jpg" alt="Wine 7">
                     </div>
@@ -144,7 +163,7 @@
                 </div>
 
                 <!-- Вино 8 -->
-                <div class="wine-card" onclick="openModal(8)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(8)">
                     <div class="wine-image">
                         <img src="img1/Vega Sicilia Único.jpg" alt="Wine 8">
                     </div>
@@ -155,7 +174,7 @@
                 </div>
 
                 <!-- Вино 9 -->
-                <div class="wine-card" onclick="openModal(9)">
+                <div class="wine-card" data-category="біле" onclick="openModal(9)">
                     <div class="wine-image">
                         <img src="img1/Domaine de la Romanée-Conti Montrachet.jpg" alt="Wine 9">
                     </div>
@@ -166,7 +185,7 @@
                 </div>
 
                 <!-- Вино 10 -->
-                <div class="wine-card" onclick="openModal(10)">
+                <div class="wine-card" data-category="біле" onclick="openModal(10)">
                     <div class="wine-image">
                         <img src="img1/Domaine Leflaive Chevalier-Montrachet.jpg" alt="Wine 10">
                     </div>
@@ -177,31 +196,29 @@
                 </div>
 
                 <!-- Вино 11 -->
-                <div class="wine-card" onclick="openModal(11)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(11)">
                     <div class="wine-image">
                         <img src="wine11.jpg" alt="Wine 11">
                     </div>
                     <div class="wine-info">
                         <h3>Назва вина 11</h3>
                         <p class="wine-type">Тип вина</p>
-                        <p class="wine-price">₴ 700</p>
                     </div>
                 </div>
 
                 <!-- Вино 12 -->
-                <div class="wine-card" onclick="openModal(12)">
+                <div class="wine-card" data-category="червоне" onclick="openModal(12)">
                     <div class="wine-image">
                         <img src="wine12.jpg" alt="Wine 12">
                     </div>
                     <div class="wine-info">
                         <h3>Назва вина 12</h3>
                         <p class="wine-type">Тип вина</p>
-                        <p class="wine-price">₴ 880</p>
                     </div>
                 </div>
 
                 <!-- Вино 13 -->
-                <div class="wine-card" onclick="openModal(13)">
+                <div class="wine-card" data-category="ігристе" onclick="openModal(13)">
                     <div class="wine-image">
                         <img src="img1/Louis Roederer Cristal.jpg" alt="Wine 13">
                     </div>
@@ -212,7 +229,7 @@
                 </div>
 
                 <!-- Вино 14 -->
-                <div class="wine-card" onclick="openModal(14)">
+                <div class="wine-card" data-category="ігристе" onclick="openModal(14)">
                     <div class="wine-image">
                         <img src="img1/Salon Le Mesnil Blanc de Blancs.jpg" alt="Wine 14">
                     </div>
@@ -223,7 +240,7 @@
                 </div>
 
                 <!-- Вино 15 -->
-                <div class="wine-card" onclick="openModal(15)">
+                <div class="wine-card" data-category="кріплене червоне" onclick="openModal(15)">
                     <div class="wine-image">
                         <img src="img1/Quinta do Noval Nacional Vintage Port.jpg" alt="Wine 15">
                     </div>
@@ -234,18 +251,18 @@
                 </div>
 
                 <!-- Вино 16 -->
-                <div class="wine-card" onclick="openModal(16)">
+                <div class="wine-card" data-category="ігристе" onclick="openModal(16)">
                     <div class="wine-image">
                         <img src="img1/Armand de Brignac.jpg" alt="Wine 16">
                     </div>
-                    <div class="img1/Armand de Brignac.jpg">
+                    <div class="wine-info">
                         <h3>Armand de Brignac</h3>
                         <p class="wine-type">Франція. Золота пляшка, що стала символом сучасної розкоші.</p>
                     </div>
                 </div>
 
                 <!-- Вино 17 -->
-                <div class="wine-card" onclick="openModal(17)">
+                <div class="wine-card" data-category="кріплене червоне" onclick="openModal(17)">
                     <div class="img1/Penfolds 50 Year Old Rare Tawny.jpg">
                         <img src="" alt="Wine 17">
                     </div>
@@ -256,7 +273,7 @@
                 </div>
 
                 <!-- Вино 18 -->
-                <div class="wine-card" onclick="openModal(18)">
+                <div class="wine-card" data-category="ігристе" onclick="openModal(18)">
                     <div class="wine-image">
                         <img src="img1/Bollinger Vieilles Vignes Françaises.jpg" alt="Wine 18">
                     </div>
@@ -267,7 +284,7 @@
                 </div>
 
                 <!-- Вино 19 -->
-                <div class="wine-card" onclick="openModal(19)">
+                <div class="wine-card" data-category="біле десертне" onclick="openModal(19)">
                     <div class="wine-image">
                         <img src="img1/Château d’Yquem.jpg" alt="Wine 19">
                     </div>
@@ -278,7 +295,7 @@
                 </div>
 
                 <!-- Вино 20 -->
-                <div class="wine-card" onclick="openModal(20)">
+                <div class="wine-card" data-category="біле десертне" onclick="openModal(20)">
                     <div class="wine-image">
                         <img src="img1/Royal Tokaji Essencia.jpg" alt="Wine 20">
                     </div>
@@ -291,7 +308,117 @@
         </div>
     </section>
 
+    <!-- Club members exclusive wines (hidden by default, will be shown only to club members) -->
+    <section id="club-wines-section" class="wine-grid club-only-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Ексклюзивно для учасників клубу</h2>
+            <div class="grid">
+                <div class="wine-card" onclick="openModal(101)">
+                    <div class="wine-image">
+                        <img src="img1/Romanée-Conti.jpg" alt="VIP 1">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Romanée-Conti (Ексклюзив)</h3>
+                        <p class="wine-type">Ексклюзивний доступ для учасників клубу</p>
+                    </div>
+                </div>
+                <div class="wine-card" onclick="openModal(102)">
+                    <div class="wine-image">
+                        <img src="img1/Château Margaux.jpg" alt="VIP 2">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Château Margaux (Ексклюзив)</h3>
+                        <p class="wine-type">Елітна колекція для клубу</p>
+                    </div>
+                </div>
+                <div class="wine-card" onclick="openModal(103)">
+                    <div class="wine-image">
+                        <img src="img1/Masseto.jpg" alt="VIP 3">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Masseto (Ексклюзив)</h3>
+                        <p class="wine-type">Рідкісне Італійське вино</p>
+                    </div>
+                </div>
+                <div class="wine-card" onclick="openModal(104)">
+                    <div class="wine-image">
+                        <img src="img1/Pétrus.jpg" alt="VIP 4">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Pétrus (Ексклюзив)</h3>
+                        <p class="wine-type">Легендарне Мерло</p>
+                    </div>
+                </div>
+                <div class="wine-card" onclick="openModal(105)">
+                    <div class="wine-image">
+                        <img src="img1/Domaine de la Romanée-Conti Montrachet.jpg" alt="VIP 5">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Domaine (Ексклюзив)</h3>
+                        <p class="wine-type">Ексклюзивні бочки та витримка</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Modal Windows -->
+
+    <!-- Глобальне модальне вікно для оформлення замовлення -->
+    <div class="region-modal" id="modal-order" style="display:none;">
+        <div class="modal-overlay" onclick="closeOrderModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+
+            <div class="modal-left">
+                <img id="order-wine-img" src="" alt="Selected Wine" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div class="modal-info">
+                <h2 class="modal-region-title">Оформлення замовлення</h2>
+                <div class="modal-description">
+                    <p id="orderProductName" class="order-product-name"></p>
+                </div>
+
+                <form id="orderForm" class="order-form">
+                    <input type="hidden" id="orderProduct" name="product_name" />
+
+                    <div class="form-group">
+                        <label for="orderSelect" class="form-label">Виберіть товар</label>
+                        <select id="orderSelect" name="product_select" class="form-control">
+                            <!-- Заповнюється динамічно -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderQuantity" class="form-label">Кількість</label>
+                        <input type="number" id="orderQuantity" name="quantity" value="1" min="1" class="form-control short">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderName" class="form-label">Ім'я</label>
+                        <input type="text" id="orderName" name="customer_name" required class="form-control">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderEmail" class="form-label">Email</label>
+                        <input type="email" id="orderEmail" name="email" required class="form-control">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderPhone" class="form-label">Телефон</label>
+                        <input type="text" id="orderPhone" name="phone" required class="form-control">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="orderSubmit" class="btn-buy">Оформити замовлення</button>
+                    </div>
+                </form>
+
+                <div id="orderMessage" class="order-message" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
     
     <!-- Модальне вікно 1: Romanée-Conti -->
     <div class="region-modal" id="modal-1">
@@ -309,7 +436,7 @@
                     <p>Смакові відчуття: "Феномен цього вина — у його оманливій невагомості. Воно здається прозорим і легким, але має неймовірну ароматичну силу (ефект 'хвоста павича'). Ви відчуєте витончений аромат пелюсток зів'ялої троянди, фіалки, диких ягід та екзотичних східних прянощів. Смак — це чистий шовк, що огортає рецептори, залишаючи безкінечний, мінеральний, майже солоний посмак</p>                </div>
                 <div class="modal-footer">
                     <div class="modal-price">ЦІНА: 980 000 ₴</div>
-                    <button class="btn-buy">КУПИТИ</button>
+                    <button class="btn-buy" data-wine-id="1" data-wine-name="Romanée-Conti">КУПИТИ</button>
                     <button class="like-btn" data-id="wine1" data-name="Romanée-Conti" data-img="img1/Romanée-Conti.jpg">❤️ Уподобати</button>
                 </div>
             </div>
@@ -554,7 +681,7 @@
                 <div class="modal-footer">
                     <div class="modal-price">ЦІНА: 700 ₴</div>
                     <button class="btn-buy">КУПИТИ</button>
-                    <button class="like-btn" data-id="wine11" data-name="Назва вина 11" data-img="wine11.jpg">❤️ Уподобати</button>
+                    <button class="like-btn" data-id="11" data-name="Назва вина 11" data-img="img1/wine11.jpg">❤️ Уподобати</button>
                 </div>
             </div>
         </div>
@@ -579,7 +706,7 @@
                 <div class="modal-footer">
                     <div class="modal-price">ЦІНА: 880 ₴</div>
                     <button class="btn-buy">КУПИТИ</button>
-                    <button class="like-btn" data-id="wine12" data-name="Назва вина 12" data-img="wine12.jpg">❤️ Уподобати</button>
+                    <button class="like-btn" data-id="12" data-name="Назва вина 12" data-img="img1/wine12.jpg">❤️ Уподобати</button>
                 </div>
             </div>
         </div>
@@ -824,6 +951,44 @@
         </div>
     </footer>
 
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+                
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="wine_script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

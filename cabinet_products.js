@@ -17,20 +17,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Додаємо ефект кліку
         link.addEventListener('click', function(e) {
-            // Якщо це logout, показуємо підтвердження
+            // Якщо це logout, показуємо підтвердження та виконуємо запит до бека
             if (this.classList.contains('logout-link')) {
                 const confirmLogout = confirm('Ви впевнені, що хочете вийти?');
                 if (!confirmLogout) {
                     e.preventDefault();
                     return;
                 }
+
+                e.preventDefault();
+
+                // Показуємо анімацію або миттєво делегуємо повний вихід
+                if (window && typeof window.handleLogout === 'function') {
+                    window.handleLogout();
+                } else {
+                    try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
+                    window.location.href = 'index.html';
+                }
             }
-            
-            // Видаляємо активний клас з усіх посилань
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            
-            // Додаємо активний клас до натиснутого посилання
-            this.classList.add('active');
         });
     });
     
@@ -193,35 +197,45 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Завантажуємо уподобані товари зі серверу; якщо не вдалось, використовуємо localStorage
     function loadFavorites() {
-        fetch('api.php?action=get_favorites')
+        fetch('api.php?action=get_favorites', { credentials: 'same-origin' })
             .then(r => r.json())
             .then(data => {
+                console.log('get_favorites result:', data);
                 if (data && data.success && Array.isArray(data.favorites) && data.favorites.length) {
                     renderFavorites(data.favorites);
                 } else {
                     // Якщо сервер відповів, що немає уподобаних або користувач не в сесії — перевіряємо localStorage
                     const local = JSON.parse(localStorage.getItem('wineFavorites') || '[]');
+                    console.log('local wineFavorites:', local);
                     if (local && local.length) {
                         renderFavorites(local.map(f => ({ product_id: f.id, name: f.name, img: f.img, price: f.price || '' })));
                     } else {
-                        document.getElementById('no-favorites').style.display = 'block';
+                        const noEl = document.getElementById('no-favorites');
+                        if (noEl) noEl.style.display = 'block';
                     }
                 }
             }).catch(err => {
+                console.warn('get_favorites failed:', err);
                 // Network error — fallback to localStorage
                 const local = JSON.parse(localStorage.getItem('wineFavorites') || '[]');
                 if (local && local.length) {
                     renderFavorites(local.map(f => ({ product_id: f.id, name: f.name, img: f.img, price: f.price || '' })));
                 } else {
-                    document.getElementById('no-favorites').style.display = 'block';
+                    const noEl = document.getElementById('no-favorites');
+                    if (noEl) noEl.style.display = 'block';
                 }
             });
     }
 
     function renderFavorites(items) {
         const grid = document.getElementById('favorites-grid');
+        if (!grid) {
+            console.warn('favorites-grid element not found');
+            return;
+        }
         grid.innerHTML = '';
-        document.getElementById('no-favorites').style.display = 'none';
+        const noFav = document.getElementById('no-favorites');
+        if (noFav) noFav.style.display = 'none';
 
         items.forEach(item => {
             // Use wine-card markup so layout matches the main wine page, include data-id on product button
@@ -245,10 +259,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Підключаємо обробники для кнопок видалення
         document.querySelectorAll('.remove-fav').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const pid = this.getAttribute('data-id');
+            btn.addEventListener('click', function(e) {
+                const pidRaw = this.getAttribute('data-id') || this.dataset.id || '';
+                const m = pidRaw && pidRaw.match(/(\d+)/);
+                const pid = m ? m[1] : pidRaw;
+                console.log('remove clicked', pid);
+                const card = this.closest('.wine-card');
+                const btnEl = this;
+                btnEl.disabled = true;
+                btnEl.textContent = 'ВИДАЛЯЄТЬСЯ...';
                 // call the top-level removeFavorite (defined below)
-                removeFavorite(pid);
+                removeFavorite(pid, card, btnEl);
             });
         });
 
@@ -291,28 +312,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function removeFromFavoritesLocal(productId) {
         let favorites = JSON.parse(localStorage.getItem('wineFavorites') || '[]');
-        favorites = favorites.filter(f => f.id !== productId);
+        favorites = favorites.filter(f => {
+            const fid = String(f.id || f.product_id || '');
+            // support legacy 'wine11' or 'product11' ids as well as numeric ids
+            return !(fid === String(productId) || fid === ('wine' + productId) || fid === ('product' + productId));
+        });
         localStorage.setItem('wineFavorites', JSON.stringify(favorites));
         console.log('Товар видалено з обраного (локально):', productId);
     }
 
     // Видалення уподобаного товару (зовнішня функція, яка викликається кнопкою)
-    function removeFavorite(productId) {
+    function removeFavorite(productId, cardElement = null, buttonElement = null) {
         if (!productId) return;
-        fetch('/api.php?action=remove_favorite', {
+        fetch('api.php?action=remove_favorite', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ product_id: productId })
         }).then(r => r.json()).then(data => {
             if (data && data.success) {
-                loadFavorites();
-            } else {
+                // Visual removal with small animation
+                if (cardElement) {
+                    cardElement.style.transition = 'all 0.3s ease';
+                    cardElement.style.opacity = '0';
+                    cardElement.style.transform = 'translateY(-10px)';
+                    setTimeout(() => cardElement.remove(), 300);
+                } else {
+                    loadFavorites();
+                }
                 removeFromFavoritesLocal(productId);
-                loadFavorites();
+                if (typeof showNotification === 'function') showNotification(data.message || 'Видалено з обраного', 'success');
+            } else {
+                // Server rejected (possibly not logged in) -> remove locally and update UI
+                removeFromFavoritesLocal(productId);
+                if (cardElement) cardElement.remove(); else loadFavorites();
+                if (typeof showNotification === 'function') showNotification(data && data.message ? data.message : 'Не вдалось видалити з сервера, видалено локально', 'info');
             }
         }).catch(err => {
+            console.warn('remove_favorite fetch failed', err);
+            // network error -> remove locally and update UI
             removeFromFavoritesLocal(productId);
-            loadFavorites();
+            if (cardElement) cardElement.remove(); else loadFavorites();
+            if (typeof showNotification === 'function') showNotification('Проблеми з мережею. Товар видалений локально.', 'info');
+        }).finally(() => {
+            if (buttonElement) {
+                buttonElement.disabled = false;
+                buttonElement.textContent = 'ВИДАЛИТИ';
+            }
         });
     }
 

@@ -3,6 +3,50 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Отримуємо всі посилання в сайдбарі
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    // Явний обробник для кнопки виходу (id="logout-btn") — надійний обробник на всіх сторінках
+    (function attachExplicitLogout() {
+        const explicitLogoutBtn = document.getElementById('logout-btn');
+        if (explicitLogoutBtn) {
+            explicitLogoutBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                console.log('Explicit cabinet logout clicked');
+
+                const confirmLogout = confirm('Вийти з аккаунта?');
+                if (!confirmLogout) return;
+
+                if (window && typeof window.handleLogout === 'function') {
+                    try {
+                        await window.handleLogout();
+                        return;
+                    } catch (err) {
+                        console.warn('window.handleLogout failed, falling back', err);
+                    }
+                }
+
+                // Fallback: full cleanup
+                try {
+                    localStorage.removeItem('user_id');
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    document.cookie.split(';').forEach(c => {
+                        const eqPos = c.indexOf('=');
+                        const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + location.hostname;
+                    });
+                } catch (er) { console.warn('Error clearing client data during logout', er); }
+
+                try {
+                    await fetch('api.php?action=logout', { method: 'GET', credentials: 'same-origin' });
+                } catch (err) { console.warn('Server logout request failed', err); }
+
+                window.location.href = 'index.html';
+            });
+        } else {
+            console.warn('explicit logout button (#logout-btn) не знайдено на цій сторінці');
+        }
+    })();
     
     // Отримуємо поточну сторінку
     const currentPage = window.location.pathname.split('/').pop();
@@ -17,20 +61,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Додаємо ефект кліку з анімацією
         link.addEventListener('click', function(e) {
-            // Якщо це logout, показуємо підтвердження
+            // Якщо це logout, показуємо підтвердження та виконуємо запит до бека
             if (this.classList.contains('logout-link')) {
                 const confirmLogout = confirm('Ви впевнені, що хочете вийти?');
                 if (!confirmLogout) {
                     e.preventDefault();
                     return;
                 }
+
+                e.preventDefault();
+
+                if (window && typeof window.handleLogout === 'function') {
+                    window.handleLogout();
+                } else {
+                    try { localStorage.clear(); sessionStorage.clear(); } catch (e) {}
+                    window.location.href = 'index.html';
+                }
             }
-            
-            // Видаляємо активний клас з усіх посилань
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            
-            // Додаємо активний клас до натиснутого посилання
-            this.classList.add('active');
         });
     });
     
