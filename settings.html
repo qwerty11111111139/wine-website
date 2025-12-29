@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мій Кабінет - Налаштування</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <!-- Верхній хедер -->
+    <header class="top-header">
+        <div class="header-content">
+            <h1 class="logo">DIONYSUS CELLAR</h1>
+            <nav class="main-nav">
+                <a href="index.html">ГОЛОВНА</a>
+                <a href="wine.html">ВИНА</a>
+                <a href="about.html">ПРО НАС</a>
+                <a href="contacts.html">КОНТАКТИ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Банер -->
+    <div class="banner">
+        <div class="banner-content">
+            <p class="banner-subtitle">ВІТАЄМО В ОСОБИСТОМУ КАБІНЕТІ</p>
+            <h2 class="banner-title">Історія замовлень</h2>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Ліва бічна панель -->
+        <aside class="sidebar">
+            <h3 class="sidebar-title">ОСОБИСТІ ДАНІ</h3>
+            
+            <nav class="sidebar-nav">
+                <a href="cabinet_Order_history.html" class="nav-item">
+                    <span class="icon">📦</span>
+                    <span>ІСТОРІЯ ЗАМОВЛЕНЬ</span>
+                </a>
+                
+                <a href="cabinet_products.html" class="nav-item">
+                    <span class="icon">❤️</span>
+                    <span>ОБРАНЕ</span>
+                </a>
+                
+                <a href="settings.html" class="nav-item active">
+                    <span class="icon">⚙️</span>
+                    <span>НАЛАШТУВАННЯ</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="logout.php" class="nav-item">
+                <span class="icon">🚪</span>
+                <span>Вихід</span>
+            </a>
+        </aside>
+
+        <!-- Основний контент -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Ліва панель налаштувань (INFO ONLY) -->
+                <div class="left-panel">
+                    <h2 class="subtitle">ОСОБИСТІ ДАНІ</h2>
+
+                    <div class="profile-info">
+                        <div class="form-group">
+                            <label>Ім'я</label>
+                            <div class="info-value" id="infoName">—</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="info-value" id="infoEmail">—</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <div class="info-value" id="infoPhone">—</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Права панель зміни даних -->
+                <div class="right-panel">
+                    <h2 class="panel-title">ЗМІНА ДАНИХ</h2>
+                    
+                    <form id="changeDataForm" class="change-form">
+                        <div class="form-group">
+                            <label>Змінити Ім'я</label>
+                            <input type="text" id="changeName" placeholder="Ім'я" class="input-field">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Змінити Пошту</label>
+                            <input type="email" id="changeEmail" placeholder="Email" class="input-field">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Змінити Пароль</label>
+                            <input type="password" id="changePassword" placeholder="Новий пароль" class="input-field">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Підтвердити Пароль</label>
+                            <input type="password" id="confirmPassword" placeholder="Підтвердити пароль" class="input-field">
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">ЗБЕРЕГТИ ЗМІНИ</button>
+                        <div id="changeMessage" style="margin-top:12px; display:none;"></div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="settings.js"></script>
+</body>
+</html>

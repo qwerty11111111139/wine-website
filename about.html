@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dionysus Cellar - Винна Колекція</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="about.css">
 </head>
 <body>
@@ -16,13 +17,22 @@
                     <li><a href="index.html">Головна</a></li>
                     <li><a href="wine.html">Вино</a></li>
                     <li><a href="about.html">Про нас</a></li>
-                    <li><a href="cabinet.html">Контакти</a></li>
+                    <li><a href="Contacts.html">Контакти</a></li>
                 </ul>
             </nav>
             <div class="header-divider"></div>
         </div>
         <div class="header-actions">
-            <a href="#" class="login-button">Увійти</a>
+            <form id="headerSearchForm" class="header-search-form" role="search">
+                <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                <button type="submit" class="header-search-btn" aria-label="Пошук">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </form>
+            <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
         </div>
     </header>
 
@@ -107,6 +117,44 @@
         <a href="wine.html" class="cta-button">До Колекції</a>
     </section>
 
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+                
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="about.js"></script>
+    <script src="script.js"></script>
 </body>
-</html>
+</html> 

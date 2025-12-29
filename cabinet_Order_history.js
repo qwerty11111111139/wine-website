@@ -20,20 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleLogout() {
         const confirmLogout = confirm('Ви впевнені, що хочете вийти з кабінету?');
         
-        if (confirmLogout) {
-            // Показуємо анімацію
-            showLogoutAnimation();
-            
-            // Очищаємо дані користувача
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userToken');
-            localStorage.removeItem('userData');
-            
-            // Через 1 секунду редіректимо
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1000);
-        }
+        if (!confirmLogout) return;
+
+        // Покажемо анімацію виходу
+        showLogoutAnimation();
+
+        // Через невелику паузу делегуємо вихід глобальній функції, яка виконає повну очистку
+        setTimeout(() => {
+            if (window && typeof window.handleLogout === 'function') {
+                window.handleLogout();
+            } else {
+                try { localStorage.clear(); sessionStorage.clear(); } catch(e){}
+                window.location.href = 'index.html';
+            }
+        }, 800);
     }
     
     // Анімація виходу
@@ -63,6 +63,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // === ЗАВАНТАЖЕННЯ ЗАМОВЛЕНЬ ===
     loadOrders();
+
+// === ФУНКЦІЯ ЗАВАНТАЖЕННЯ ЗАМОВЛЕНЬ (реальна реалізація) ===
+async function loadOrders() {
+    const emptyState = document.querySelector('.empty-state');
+    const ordersContainer = document.getElementById('ordersContainer');
+
+    try {
+        const resp = await fetch('api_orders.php', { method: 'GET', credentials: 'same-origin' });
+        const data = await resp.json();
+
+        if (!data || !data.success) {
+            // якщо не залогінений або помилка
+            emptyState.style.display = 'flex';
+            ordersContainer.style.display = 'none';
+            return;
+        }
+
+        const orders = data.orders || [];
+
+        if (orders.length > 0) {
+            emptyState.style.display = 'none';
+            ordersContainer.style.display = 'block';
+            renderOrders(orders);
+        } else {
+            emptyState.style.display = 'flex';
+            ordersContainer.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Помилка завантаження замовлень:', error);
+        showError('Не вдалося завантажити історію замовлень');
+    }
+}
     
     // === ЗОЛОТИСТЕ ПІДСВІЧУВАННЯ СОЦІАЛЬНИХ ІКОНОК ===
     const socialLinks = document.querySelectorAll('.social-link');
@@ -114,30 +146,28 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadOrders() {
     const emptyState = document.querySelector('.empty-state');
     const ordersContainer = document.getElementById('ordersContainer');
-    
+
     try {
-        // ТУТ БУДЕ ЗАПИТ ДО БАЗИ ДАНИХ
-        // const response = await fetch('/api/orders');
-        // const orders = await response.json();
-        
-        // Тимчасово використовуємо порожній масив
-        const orders = [];
-        
+        const resp = await fetch('api_orders.php', { method: 'GET', credentials: 'same-origin' });
+        const data = await resp.json();
+
+        if (!data || !data.success) {
+            emptyState.style.display = 'flex';
+            ordersContainer.style.display = 'none';
+            return;
+        }
+
+        const orders = data.orders || [];
+
         if (orders.length > 0) {
-            // Приховуємо порожній стан
             emptyState.style.display = 'none';
-            
-            // Показуємо контейнер з замовленнями
             ordersContainer.style.display = 'block';
-            
-            // Рендеримо замовлення
             renderOrders(orders);
         } else {
-            // Показуємо порожній стан
             emptyState.style.display = 'flex';
             ordersContainer.style.display = 'none';
         }
-        
+
     } catch (error) {
         console.error('Помилка завантаження замовлень:', error);
         showError('Не вдалося завантажити історію замовлень');
@@ -148,7 +178,7 @@ async function loadOrders() {
 function renderOrders(orders) {
     const ordersContainer = document.getElementById('ordersContainer');
     ordersContainer.innerHTML = '';
-    
+
     orders.forEach(order => {
         const orderCard = createOrderCard(order);
         ordersContainer.appendChild(orderCard);
@@ -159,32 +189,58 @@ function renderOrders(orders) {
 function createOrderCard(order) {
     const card = document.createElement('div');
     card.className = 'order-card';
-    
+
+    // created_at might be present
+    const dateStr = order.created_at ? formatDate(order.created_at) : '';
+    const imgSrc = order.image ? order.image : 'img1/default.jpg';
+
     card.innerHTML = `
-        <div class="order-header">
-            <h3>Замовлення #${order.id}</h3>
-            <span class="order-status status-${order.status}">${getStatusText(order.status)}</span>
+        <div class="order-thumb-wrap">
+            <img src="${imgSrc}" alt="${order.product_name}" class="order-image" />
         </div>
-        <div class="order-body">
-            <p class="order-date">Дата: ${formatDate(order.date)}</p>
-            <p class="order-total">Сума: ${order.total} EUR</p>
-            <div class="order-items">
-                ${order.items.map(item => `
-                    <div class="order-item">
-                        <span>${item.name}</span>
-                        <span>${item.quantity} x ${item.price} EUR</span>
-                    </div>
-                `).join('')}
-            </div>
+        <div class="order-content">
+            <h4 class="order-title">${order.product_name}</h4>
+            <p class="order-quantity">Кількість: ${order.quantity}</p>
         </div>
-        <div class="order-footer">
-            <button class="view-order-btn" onclick="viewOrderDetails(${order.id})">
-                Переглянути деталі
-            </button>
+        <div class="order-meta">
+            <div class="order-date">Дата: ${dateStr}</div>
+            <div class="order-contact">${order.customer_name} — ${order.email}${order.phone ? ' — ' + order.phone : ''}</div>
+        </div>
+        <div class="order-actions">
+            <button class="view-order-btn" onclick="viewOrderDetails(${order.id})">Переглянути</button>
+            <button class="delete-order-btn" onclick="deleteOrder(${order.id}, this)">Видалити</button>
         </div>
     `;
-    
+
     return card;
+}
+
+// Видалити замовлення (UI + backend call)
+async function deleteOrder(orderId, btn) {
+    if (!confirm('Ви впевнені, що хочете видалити замовлення?')) return;
+
+    try {
+        const res = await fetch('api_orders.php', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_order', id: orderId })
+        });
+        const json = await res.json();
+        if (json && json.success) {
+            const card = btn.closest('.order-card');
+            card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => card.remove(), 300);
+            showNotification('Замовлення видалено', 'success');
+        } else {
+            showNotification(json.message || 'Не вдалося видалити замовлення', 'error');
+        }
+    } catch (err) {
+        console.error('Delete order error:', err);
+        showNotification('Помилка мережі при видаленні замовлення', 'error');
+    }
 }
 
 // === ДОПОМІЖНІ ФУНКЦІЇ ===

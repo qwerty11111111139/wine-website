@@ -83,24 +83,28 @@ nav a:hover {
     color: #d4af37;
 }
 
-.login-button {
-    padding: 10px 30px;
-    background-color: transparent;
-    color: #d4af37;
-    border: 1px solid #d4af37;
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: all 0.3s;
+/* Use shared .login-btn from style.css for consistent appearance */
+/* User link styled as button (matches index style) */
+.user-btn {
+    background: #D4AF37;
+    border: 1px solid #D4AF37;
+    color: #0a0a0a;
+    padding: 0.6rem 1.8rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    border-radius: 30px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.login-button:hover {
-    background-color: #d4af37;
-    color: #000;
-}
+.user-btn:hover {
+    background: #F0D058;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}  
 
 /* Hero Section */
 .hero {

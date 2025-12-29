@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакти - Dionysus Cellar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="contacts.css">
+</filePath>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>DIONYSUS CELLAR</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">ГОЛОВНА</a>
+                <a href="wines.html">ВИНА</a>
+                <a href="about.html">ПРО НАС</a>
+                <a href="Contacts.html" class="active">КОНТАКТИ</a>
+            </nav>
+            <form id="headerSearchForm" class="header-search-form" role="search">
+                <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                <button type="submit" class="header-search-btn" aria-label="Пошук">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </form>
+            <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
+            <div class="header-icons">
+               
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">DIONYSUS WINE COLLECTIONS</p>
+            <h1 class="hero-title">КОНТАКТИ</h1>
+            <p class="hero-description">Зв'яжіться з нами або завітайте особисто</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Contact Info Cards -->
+            <div class="contact-grid">
+                
+                <!-- Card 1: Our Contacts -->
+                <div class="contact-card">
+                    <h2 class="card-title">НАШІ КОНТАКТИ</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h3>Адреса:</h3>
+                            <p>Виноградна область, вул. Шато, 12,</p>
+                            <p>Одеська область, Україна</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-details">
+                            <h3>Телефон:</h3>
+                            <p>+38 (099) 123-45-67</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-details">
+                            <h3>Email:</h3>
+                            <p>contact@dionysus.ua</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Working Hours -->
+                <div class="contact-card">
+                    <h2 class="card-title">ГОДИНИ РОБОТИ</h2>
+                    
+                    <div class="working-hours">
+                        <div class="hours-item">
+                            <div class="hours-icon">🕐</div>
+                            <div class="hours-details">
+                                <h3>Понеділок - Неділя:</h3>
+                                <p>10:00 - 20:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="hours-note">
+                            <p>Дегустації та попередній запис</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contact Form Section -->
+            <section class="contact-form-section">
+                <h2 class="section-title">ЗВ'ЯЖІТЬСЯ З НАМИ</h2>
+                <p class="section-description">Заповніть форму і ми зв'яжемося з вами найближчим часом</p>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Ім'я *</label>
+                            <input type="text" id="name" name="name" placeholder="Ваше ім'я" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+38 (099) 123-45-67">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Тема повідомлення *</label>
+                        <input type="text" id="subject" name="subject" placeholder="Тема" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Повідомлення *</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Ваше повідомлення..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">ВІДПРАВИТИ ПОВІДОМЛЕННЯ</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>DIONYSUS CELLAR</h2>
+                <p>Ексклюзивна колекція вин світового класу</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Facebook">f</a>
+                <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                <a href="#" class="social-link" aria-label="YouTube">▶</a>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="contacts.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

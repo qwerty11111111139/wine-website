@@ -17,9 +17,16 @@
                 <a href="index.html">ГОЛОВНА</a>
                 <a href="wine.html">ВИНА</a>
                 <a href="about.html">ПРО НАС</a>
-                <a href="contacts.html">КОНТАКТИ</a>
-            </nav>
-        </div>
+                <a href="Contacts.html">КОНТАКТИ</a>
+            </nav>            <form id="headerSearchForm" class="header-search-form" role="search">
+                <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                <button type="submit" class="header-search-btn" aria-label="Пошук">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </form>        </div>
     </header>
 
     <!-- Hero Section -->
@@ -36,7 +43,10 @@
         <div class="container">
             <!-- Left Sidebar - Menu -->
             <aside class="sidebar">
-                <h3 class="sidebar-title">ОСОБИСТІ ДАНІ</h3>
+                <a href="cabinet.html" class="sidebar-link active" data-section="profile" aria-current="page">
+                    <span class="link-icon">👤</span>
+                    <span class="link-text">ОСОБИСТІ ДАНІ</span>
+                </a>
                 <nav class="sidebar-nav">
                     <!-- Тут вставляй свої посилання -->
                     <a href="cabinet_Order_history.html" class="sidebar-link" data-section="orders">
@@ -53,10 +63,10 @@
                         <span class="link-text">НАЛАШТУВАННЯ</span>
                     </a>
                     
-                    <a href="logout.html" class="sidebar-link logout-link" data-section="logout">
+                    <a href="logout.php" class="sidebar-link">
                         <span class="link-icon">🚪</span>
-                        <span class="link-text">ВИЙТИ</span>
-                    </a>
+                        <span class="link-text">Вихід</span>
+                    </a> 
                 </nav>
             </aside>
 

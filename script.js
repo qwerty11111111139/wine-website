@@ -116,6 +116,279 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Delegated fallback: open modals for dynamically created or replaced buttons
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-modal], .login-btn, .btn-login');
+        if (!trigger) return;
+        const modalName = trigger.getAttribute('data-modal') || trigger.dataset.modal || 'login';
+        const modal = document.getElementById(`modal-${modalName}`);
+        if (modal) {
+            e.preventDefault();
+            document.body.style.overflow = 'hidden';
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
+    });
+
+    // Delegated close handler (overlay or close button)
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay') || e.target.closest('.modal-close')) {
+            const modal = e.target.closest('.region-modal') || (e.target.closest('.modal-overlay') && e.target.closest('.modal-overlay').closest('.region-modal'));
+            if (modal) {
+                closeModal(modal);
+            }
+        }
+    });
+
+    // === АВТОРИЗАЦІЯ В ХЕДЕРІ: перевірка сесії та логіку відображення ===
+    // Показує або кнопку входу (гость) або одну кнопку з іменем користувача (зайшов)
+    function renderUserInHeader(userName, role = 'user') {
+        const selectors = ['#loginBtn', '.login-btn', '.btn-login'];
+        const selQuery = selectors.join(',');
+
+            // Remove duplicate user elements but preserve first login placeholder if present
+        const nav = document.querySelector('.nav-actions');
+
+        // Find any existing login placeholders; keep the first (primary), remove extras
+        const existingPlaceholders = Array.from(document.querySelectorAll(selectors));
+        const primaryPlaceholder = existingPlaceholders.length ? existingPlaceholders[0] : null;
+        existingPlaceholders.slice(1).forEach(el => el.remove());
+
+        // Remove leftover user buttons/auth actions (to avoid duplicates)
+        document.querySelectorAll('.user-btn, .auth-actions').forEach(el => el.remove());
+
+        if (userName) {
+            // Create a single user button matching the primary placeholder's tag when possible
+            const createUserElement = (tagName = 'a') => {
+                const el = document.createElement(tagName.toLowerCase());
+                el.className = 'user-btn';
+                el.textContent = userName;
+                if (tagName.toLowerCase() === 'a') {
+                    el.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                } else {
+                    el.addEventListener('click', () => {
+                        window.location.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                    });
+                }
+                el.title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
+                return el;
+            };
+
+            if (primaryPlaceholder) {
+                // Replace primary placeholder in-place to preserve layout
+                const tag = primaryPlaceholder.tagName || 'BUTTON';
+                const userEl = createUserElement(tag);
+                primaryPlaceholder.replaceWith(userEl);
+            } else if (nav) {
+                nav.appendChild(createUserElement('BUTTON'));
+            } else {
+                // Try to append into common header content regions used by other pages
+                const headerContent = document.querySelector('.header .header-content') || document.querySelector('.header .container') || document.querySelector('.header');
+                if (headerContent) headerContent.appendChild(createUserElement('BUTTON'));
+                else (document.querySelector('header') || document.body).appendChild(createUserElement('BUTTON'));
+            }
+
+            return;
+        }
+
+        // Guest: ensure there is only one login button and it appears in the expected place
+        if (primaryPlaceholder) {
+            // If primary existed but was replaced earlier, ensure it's a proper login button
+            const loginBtn = document.createElement(primaryPlaceholder.tagName.toLowerCase());
+            loginBtn.className = 'login-btn';
+            loginBtn.id = 'loginBtn';
+            loginBtn.setAttribute('data-modal', 'login');
+            loginBtn.textContent = 'УВІЙТИ';
+            loginBtn.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                const modal = document.getElementById('modal-login');
+                if (modal) {
+                    document.body.style.overflow = 'hidden';
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                }
+            });
+            primaryPlaceholder.replaceWith(loginBtn);
+            return;
+        }
+
+        // No placeholder: append login button to nav if possible, otherwise put it into header content
+        const loginBtn = document.createElement('button');
+        loginBtn.className = 'login-btn';
+        loginBtn.id = 'loginBtn';
+        loginBtn.setAttribute('data-modal', 'login');
+        loginBtn.textContent = 'УВІЙТИ';
+        loginBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            const modal = document.getElementById('modal-login');
+            if (modal) {
+                document.body.style.overflow = 'hidden';
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            }
+        });
+
+        if (nav) nav.appendChild(loginBtn);
+        else {
+            const headerContent = document.querySelector('.header .header-content') || document.querySelector('.header .container') || document.querySelector('.header');
+            if (headerContent) headerContent.appendChild(loginBtn);
+            else (document.querySelector('header') || document.body).appendChild(loginBtn);
+        }
+    }
+
+    // Глобальна функція виходу, можна викликати звідусіль (window.handleLogout)
+    async function handleLogout() {
+        console.log('handleLogout triggered');
+
+        // FULL AMNESIA: clear storages first
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+        } catch (e) {
+            console.warn('Не вдалося очистити сховище:', e);
+        }
+
+        // Attempt server-side logout (best-effort)
+        try {
+            await fetch('api.php?action=logout', { method: 'GET', credentials: 'same-origin' });
+        } catch (err) {
+            console.warn('Помилка при виклику logout на сервері:', err);
+        }
+
+        // Remove all cookies (best-effort)
+        try {
+            document.cookie.split(';').forEach(c => {
+                const eqPos = c.indexOf('=');
+                const name = eqPos > -1 ? c.substr(0, eqPos).trim() : c.trim();
+                document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + location.hostname;
+            });
+        } catch (e) {
+            console.warn('Не вдалося видалити куки:', e);
+        }
+
+        // Verify server state: request check_session to confirm logout
+        try {
+            const res = await fetch('api.php?action=check_session', { credentials: 'same-origin' });
+            const data = await res.json();
+            if (data && data.logged_in) {
+                console.warn('Server still reports an active session after logout. Forcing logout redirect.');
+                // Force redirect with query param to indicate forced logout
+                window.location.href = 'index.html?force_logout=1';
+                return;
+            }
+        } catch (err) {
+            console.warn('Не вдалося перевірити стан сесії після logout:', err);
+        }
+
+        // Redirect to homepage (homepage now ignores any stored session)
+        window.location.href = 'index.html';
+    }
+
+    // Експортуємо на window щоб інші скрипти могли викликати
+    window.handleLogout = handleLogout;
+    window.renderUserInHeader = renderUserInHeader;
+
+    // Перевірити сесію користувача і відобразити відповідні кнопки
+    async function checkSessionForHeader() {
+        try {
+            const res = await fetch('api.php?action=check_session', { credentials: 'same-origin' });
+            const data = await res.json();
+            if (data && data.logged_in) {
+                const name = (data.user && (data.user.name || data.user_name)) ? (data.user.name || data.user_name) : 'Користувач';
+                const role = (data.user && data.user.role) ? data.user.role : (data.role || 'user');
+                renderUserInHeader(name, role);
+
+                // Strict visibility: show club section only when user is logged in AND explicitly marked as club member
+                try {
+                    const memberFlag = (typeof data.is_club_member !== 'undefined') ? parseInt(data.is_club_member, 10) : (data.user && typeof data.user.is_club_member !== 'undefined' ? parseInt(data.user.is_club_member, 10) : 0);
+                    const el = document.getElementById('club-wines-section');
+                    if (memberFlag === 1) {
+                        if (el) {
+                            el.style.display = 'block';
+                        } else if (typeof window.renderClubMembersSection === 'function') {
+                            window.renderClubMembersSection();
+                        }
+                    } else {
+                        // Ensure the section is hidden for non-members
+                        if (el) el.style.display = 'none';
+                    }
+                } catch (e) { /* ignore */ }
+            } else {
+                // Not logged in: make sure the club section is hidden
+                try {
+                    const el2 = document.getElementById('club-wines-section');
+                    if (el2) el2.style.display = 'none';
+                } catch (err) {}
+                renderUserInHeader(null);
+            }
+        } catch (e) {
+            console.error('Помилка перевірки сесії:', e);
+        }
+    }
+
+    // Викликаємо при завантаженні (ВИМКНЕНО НА ГОЛОВНІЙ)
+    (function() {
+        const path = window.location.pathname.split('/').pop();
+        if (!path || path === '' || path === 'index.html') {
+            console.log('Header session check disabled on homepage');
+            return;
+        }
+        checkSessionForHeader();
+    })();
+
+    // Ensure login buttons always open the modal (fallback + dynamic additions)
+    function ensureLoginBtnListener() {
+        document.querySelectorAll('#loginBtn, .login-btn').forEach(b => {
+            try {
+                if (!b.dataset._loginHandlerAttached) {
+                    b.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        const modal = document.getElementById('modal-login');
+                        if (modal) {
+                            document.body.style.overflow = 'hidden';
+                            modal.style.display = 'flex';
+                            modal.classList.add('active');
+                        }
+                    });
+                    b.dataset._loginHandlerAttached = '1';
+                }
+            } catch (err) {
+                // swallow any errors to avoid breaking other scripts
+                console.debug('ensureLoginBtnListener error', err);
+            }
+        });
+    }
+    ensureLoginBtnListener();
+    // Watch for dynamic insertion/replacement of header buttons
+    const _loginBtnObserver = new MutationObserver(() => ensureLoginBtnListener());
+    _loginBtnObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Делегований обробник нажаття на logout у сайдбарі/хедері (універсальний)
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest && e.target.closest('.logout-link, #logout-btn, .logout, .logout-btn');
+        if (!target) return;
+
+        // Якщо елемент вимагає підтвердження — підтверджуємо
+        const needsConfirm = target.classList.contains('logout-link') || target.classList.contains('logout');
+        if (needsConfirm) {
+            if (!confirm('Ви впевнені, що хочете вийти?')) {
+                e.preventDefault();
+                return;
+            }
+        }
+
+        e.preventDefault();
+        // Викликаємо глобальний вихід
+        if (window && typeof window.handleLogout === 'function') {
+            window.handleLogout();
+        } else {
+            // fallback: чистимо localStorage і редірект
+            ['isLoggedIn','userToken','userData','user_id','adminToken','isAdmin'].forEach(k => localStorage.removeItem(k));
+            window.location.href = 'index.html';
+        }
+    });
+
     // === ФІЛЬТРАЦІЯ ПРОДУКТІВ ===
     const filterButtons = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
@@ -239,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = Object.fromEntries(formData);
 
             // Валідація
-            if (!data.name || !data.email || !data.phone || !data.experience) {
+            if (!data.name || !data.email || !data.phone) {
                 showNotification('Будь ласка, заповніть всі обов\'язкові поля', 'error');
                 return;
             }
@@ -250,14 +523,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Симуляція відправки
-            showNotification('Дякуємо за заявку! Ми розглянемо її протягом 48 годин.', 'success');
-            inviteForm.reset();
-            // Закрити модальне вікно після успішної відправки
-            setTimeout(() => {
-                const modal = document.getElementById('modal-invite');
-                if (modal) closeModal(modal);
-            }, 2000);
+            // Visual debug to confirm handler runs
+            alert('Form submitting...');
+            // Відправляємо запит на сервер (relative path)
+            fetch('./join_club.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                console.log('join_club response', res.status, res.statusText);
+                if (!res.ok) {
+                    return res.text().then(t => { throw new Error('Server error: ' + res.status + ' ' + t); });
+                }
+                return res.json();
+            })
+            .then(resp => {
+                if (resp && resp.success) {
+                    showNotification('Дякуємо за заявку! Ми розглянемо її протягом 48 годин.', 'success');
+                    inviteForm.reset();
+                    setTimeout(() => {
+                        const modal = document.getElementById('modal-invite');
+                        if (modal) closeModal(modal);
+                    }, 1500);
+                } else {
+                    showNotification((resp && resp.message) ? resp.message : 'Помилка при відправці заявки', 'error');
+                }
+            })
+            .catch(err => {
+                console.error('Invite submit failed:', err);
+                // Fallback: submit the form normally to ensure server-side handling
+                try { inviteForm.submit(); } catch (e) { showNotification('Помилка зв\'язку з сервером', 'error'); }
+            });
         });
     }
 
@@ -265,7 +562,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const purchaseForm = document.querySelector('.purchase-form');
 
     if (purchaseForm) {
-        purchaseForm.addEventListener('submit', (e) => {
+        purchaseForm.addEventListener('submit', async (e) => {
+            // Prevent the browser's default submit behaviour first to avoid accidental reloads
             e.preventDefault();
 
             const formData = new FormData(purchaseForm);
@@ -283,14 +581,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Симуляція відправки
-            showNotification('Дякуємо за замовлення! Ми зв\'яжемося з вами найближчим часом.', 'success');
-            purchaseForm.reset();
-            // Закрити модальне вікно після успішної відправки
-            setTimeout(() => {
-                const modal = document.getElementById('modal-buy');
-                if (modal) closeModal(modal);
-            }, 2000);
+            // Збираємо реальну назву продукту (текст опції), щоб знайти її у таблиці products
+            let productName = data.wine;
+            const selectEl = purchaseForm.querySelector('#wine-select');
+            if (selectEl && selectEl.selectedIndex > 0) {
+                productName = selectEl.options[selectEl.selectedIndex].text;
+            }
+
+            const payload = {
+                product_name: productName,
+                quantity: parseInt(data.quantity, 10) || 1,
+                customer_name: data.name,
+                email: data.email,
+                phone: data.phone
+            };
+
+            try {
+                const resp = await fetch('api_orders.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await resp.json();
+                if (json && json.success) {
+                    // Show success and keep user on the same page (no reload / no redirect)
+                    const orderId = json.order && json.order.id ? json.order.id : '';
+                    showNotification(orderId ? `Замовлення #${orderId} успішно створено` : 'Замовлення успішно створено', 'success');
+                    // Reset the form and close modal, but do NOT reload or redirect
+                    purchaseForm.reset();
+                    setTimeout(() => {
+                        const modal = document.getElementById('modal-buy');
+                        if (modal) closeModal(modal);
+                        // Intentionally staying on the same page to preserve session state
+                    }, 700);
+                } else {
+                    showNotification(json.message || 'Помилка при створенні замовлення', 'error');
+                }
+            } catch (err) {
+                console.error('Order submission error:', err);
+                showNotification('Помилка мережі при створенні замовлення', 'error');
+            }
         });
     }
 
@@ -528,6 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('api.php?action=login', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -537,8 +870,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (result.success) {
-                    // Оновлення кнопки
-                    updateLoginButton(result.user.name);
+                    // Оновлення кнопки (передаємо роль, якщо вона є)
+                    const role = (result.user && (result.user.role || result.role)) ? (result.user.role || result.role) : 'user';
+                    updateLoginButton(result.user.name, role);
 
                     // Закриття модального вікна
                     const modal = document.getElementById('modal-login');
@@ -593,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('api.php?action=register', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -637,11 +972,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функція перевірки сесії
     async function checkSession() {
         try {
-            const response = await fetch('api.php?action=check_session');
+            const response = await fetch('api.php?action=check_session', { credentials: 'same-origin' });
             const result = await response.json();
 
             if (result.logged_in) {
-                updateLoginButton(result.user.name);
+                const role = result.user.role || result.role || 'user';
+                updateLoginButton(result.user.name, role);
             }
         } catch (error) {
             console.error('Помилка перевірки сесії:', error);
@@ -666,21 +1002,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Виклик перевірки сесії при завантаженні сторінки
     checkSession();
 
-    // Функція оновлення кнопки входу на ім'я користувача
-    function updateLoginButton(userName) {
-        if (navActions && loginBtnNew) {
-            // Видаляємо стару кнопку
-            loginBtnNew.remove();
+    // Функція оновлення кнопки входу на ім'я користувача (універсальна, працює на всіх сторінках)
+    function updateLoginButton(userName, role = 'user') {
+        // Якщо є централізована логіка рендера — використовуємо її (щоб уникнути дублювання)
+        if (window && typeof window.renderUserInHeader === 'function') {
+            window.renderUserInHeader(userName, role);
+            return;
+        }
 
-            // Створюємо посилання на кабінет користувача
-            const userLink = document.createElement('a');
-            userLink.className = 'user-btn';
-            userLink.textContent = userName;
-            userLink.href = 'cabinet.html';
-            userLink.title = 'Перейти до кабінету користувача';
+        // Candidate selectors for login button across pages
+        const selectors = ['#loginBtn', '.login-btn', '.btn-login'];
+        const selQuery = selectors.join(',');
 
-            // Додаємо посилання до nav-actions
-            navActions.appendChild(userLink);
+        // Видаляємо потенційні дублікати
+        document.querySelectorAll(selQuery + ', .user-btn, .auth-actions').forEach(el => el.remove());
+
+        let replaced = false;
+
+        // choose destination based on role
+        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+        const title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
+
+        selectors.forEach(sel => {
+            const el = document.querySelector(sel);
+            if (el) {
+                // Replace with a user link
+                const userLink = document.createElement('a');
+                userLink.className = 'user-btn';
+                userLink.textContent = userName;
+                userLink.href = href;
+                userLink.title = title;
+
+                el.replaceWith(userLink);
+                replaced = true;
+            }
+        });
+
+        // Fallback: append to nav-actions if present and nothing replaced
+        if (!replaced) {
+            const nav = document.querySelector('.nav-actions') || document.querySelector('.header .nav') || document.querySelector('.nav-container');
+            if (nav) {
+                const userLink = document.createElement('a');
+                userLink.className = 'user-btn';
+                userLink.textContent = userName;
+                userLink.href = href;
+                userLink.title = title;
+                nav.appendChild(userLink);
+            }
         }
     }
 

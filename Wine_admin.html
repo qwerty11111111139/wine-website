@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Адмін Панель - Dionysus Cellar</title>
+    <title>Адмін — Вина</title>
     <link rel="stylesheet" href="admin_panel.css">
+    <!-- Include wine styles so admin preview modals match public site -->
+    <link rel="stylesheet" href="style_wine.css">
 </head>
 <body>
     <div class="admin-container">
-        
-        <!-- Left Sidebar -->
         <aside class="admin-sidebar">
             <div class="admin-logo">
                 <h2>Адмін Панель</h2>
             </div>
-            
             <nav class="admin-nav">
-                <a href="admin_panel.html" class="nav-item active" data-section="recipes">
+                <a href="admin_panel.html" class="nav-item" data-section="recipes">
                     <span class="nav-icon">🍇</span>
                     <span class="nav-text">Керування винами</span>
                 </a>
-                
                 <a href="Wine_admin.html" class="nav-item" data-section="wines">
                     <span class="nav-icon">🍷</span>
                     <span class="nav-text">Вина</span>
@@ -29,27 +27,18 @@
                     <span class="nav-icon">➕</span>
                     <span class="nav-text">Додати вино</span>
                 </a>
-                
                 <a href="Admin_order.html" class="nav-item" data-section="orders">
                     <span class="nav-icon">📦</span>
                     <span class="nav-text">Замовлення</span>
                 </a>
-
-                <a href="#" class="nav-item" data-section="club_requests">
-                    <span class="nav-icon">🍷</span>
-                    <span class="nav-text">Запити в клуб</span>
-                </a>
-                
                 <a href="Admin_users.html" class="nav-item" data-section="users">
                     <span class="nav-icon">👥</span>
                     <span class="nav-text">Користувачі</span>
                 </a>
-                
                 <a href="#" class="nav-item" data-section="settings">
                     <span class="nav-icon">⚙️</span>
                     <span class="nav-text">Налаштування</span>
                 </a>
-                
                 <a href="logout.php" id="adminLogoutBtn" class="nav-item">
                     <span class="nav-icon">🚪</span>
                     <span class="nav-text">Вихід</span>
@@ -57,48 +46,33 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="admin-main">
-            
-            <!-- Header -->
             <header class="admin-header">
-                <h1 class="page-title">Керування винами</h1>
-                <div class="header-actions">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Пошук товарів...">
-                        <button class="search-btn">🔍</button>
-                    </div>
-                </div>
+                <h1 class="page-title">Вина</h1>
             </header>
 
-            <!-- Content Section -->
             <section class="content-section">
-                
-                <!-- Table Container -->
                 <div class="table-container">
-                    <table class="data-table" id="recipesTable">
+                    <table class="data-table" id="productsTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Назва</th>
                                 <th>Ціна</th>
+                                <th>Картинка</th>
                                 <th>Категорія</th>
-                                <th>Дії</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            <!-- Loading placeholder; JS will replace this when data arrives -->
-                            <tr>
-                                <td colspan="5">Завантаження...</td>
-                            </tr>
+                        <tbody id="productsBody">
+                            <!-- Продукти будуть завантажені через JS -->
                         </tbody>
                     </table>
                 </div>
-                
             </section>
         </main>
     </div>
 
     <script src="admin_panel.js"></script>
+    <script src="Wine_admin.js"></script>
 </body>
 </html>

@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <script>
+        // SECURITY: Force logout and clear any stored session data immediately when homepage loads
+        try {
+            // Clear any local/session storage to disable auto-login
+            localStorage.clear();
+            sessionStorage.clear();
+            ['isLoggedIn','userToken','userData','user_id','adminToken','isAdmin','wineFavorites'].forEach(k => localStorage.removeItem(k));
+        } catch (e) {
+            console.warn('Could not clear storage on page load', e);
+        }
+        // Attempt server-side logout to ensure PHP session is destroyed (best-effort)
+        try {
+            fetch('api.php?action=logout', { method: 'GET', credentials: 'same-origin' }).catch(()=>{});
+        } catch (e) {}
+    </script>
+
     <!-- Навігаційна панель -->
     <header class="header">
         <nav class="nav-container">
@@ -18,16 +34,19 @@
                 <li><a href="index.html" class="nav-link">ГОЛОВНА</a></li>
                 <li><a href="wine.html" class="nav-link">ВИНО</a></li>
                 <li><a href="about.html" class="nav-link">ПРО НАС</a></li>
-                <li><a href="cabinet_products.html" class="nav-link">КОНТАКТИ</a></li>
+                <li><a href="Contacts.html" class="nav-link">КОНТАКТИ</a></li>
             </ul>    
             <!-- Права частина навігації: пошук та кнопка входу -->
             <div class="nav-actions">
-                <button class="search-btn" aria-label="Пошук">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M14 14L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </button>
+                <form id="headerSearchForm" class="header-search-form" role="search">
+                    <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                    <button type="submit" class="header-search-btn" aria-label="Пошук">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </form>
                 <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
             </div>
         </nav>
@@ -192,6 +211,22 @@
         </div>
     </section>
 
+    <!-- Club members exclusive wines (hidden by default, will be shown to club members) -->
+    <section id="club-wines-section" class="wine-grid club-only-section" style="display: none;">
+        <h2 class="section-title">Ексклюзивно для учасників клубу</h2>
+        <div class="grid">
+            <!-- Placeholder exclusive cards; JS will replace or populate as needed -->
+            <div class="wine-card">
+                <img src="img1/Romanée-Conti.jpg" alt="Exclusive 1">
+                <div class="modal-info">
+                    <h3>Romanée-Conti (Ексклюзив)</h3>
+                    <p class="price">Ціна: 1 200 000 ₴</p>
+                    <button class="btn-buy" data-wine-name="Romanée-Conti (Ексклюзив)">Купити</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Секція з виноградниками -->
     <section class="vineyard-section">
         <div class="vineyard-overlay"></div>
@@ -214,8 +249,8 @@
             <div class="sunshine-image">
                 <img src="img1\Trinchero.jpg" alt="Сонячне вино Trinchero">
                 <div class="price-tag">
-                    <span class="price-old">$120.00</span>
-                    <span class="price-current">$88.00</span>
+                    <span class="price-old"> ₴ 5000.00</span>
+                    <span class="price-current"> ₴ 3700.00</span>
                 </div>
             </div>
         </div>
@@ -316,7 +351,7 @@
     <!-- МОДАЛЬНІ ВІКНА ДЛЯ РЕГІОНІВ -->
     
     <!-- Модальне вікно: Тоскана -->
-    <div class="region-modal" id="modal-tuscany">
+    <div class="region-modal legend-modal" id="modal-tuscany">
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <button class="modal-close">&times;</button>
@@ -348,7 +383,7 @@
         </div>
     </div>
  <!-- Модальне вікно: Бордо -->
-    <div class="region-modal" id="modal-bordeaux">
+    <div class="region-modal legend-modal" id="modal-bordeaux">
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <button class="modal-close">&times;</button>
@@ -380,7 +415,7 @@
     </div>
 
     <!-- Модальне вікно: Ріоха -->
-    <div class="region-modal" id="modal-rioja">
+    <div class="region-modal legend-modal" id="modal-rioja">
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <button class="modal-close">&times;</button>
@@ -427,7 +462,7 @@
                 <div class="modal-description">
                     <p>Приєднуйтесь до ексклюзивного Приватного Клубу Dionysus Cellar. Заповніть форму нижче, і наші спеціалісти розглянуть вашу кандидатуру протягом 48 годин.</p>
                     
-                    <form class="invite-form">
+                    <form class="invite-form" action="./join_club.php" method="post">
                         <div class="form-group">
                             <label for="invite-name">Ваше ім'я:</label>
                             <input type="text" id="invite-name" name="name" required>
@@ -443,16 +478,7 @@
                             <input type="tel" id="invite-phone" name="phone" required>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="experience">Досвід у виноробстві:</label>
-                            <select id="experience" name="experience" required>
-                                <option value="">-- Оберіть рівень --</option>
-                                <option value="beginner">Початківець</option>
-                                <option value="intermediate">Середній</option>
-                                <option value="advanced">Досвідчений</option>
-                                <option value="expert">Експерт</option>
-                            </select>
-                        </div>
+
                         
                         <div class="form-group">
                             <label for="message">Чому ви хочете приєднатися?</label>
@@ -482,16 +508,17 @@
                 <div class="modal-description">
                     <p>Оберіть бажане вино та заповніть форму для оформлення замовлення. Наші спеціалісти зв'яжуться з вами протягом 24 годин для підтвердження деталей.</p>
                     
-                    <form class="purchase-form">
+                    <form id="order-form" class="purchase-form">
                         <div class="form-group">
                             <label for="wine-select">Оберіть вино:</label>
                             <select id="wine-select" name="wine" required>
                                 <option value="">-- Виберіть вино --</option>
                                 <option value="cabernet">Cabernet Sauvignon</option>
-                                <option value="chardonnay">Vie di Romans Chardonnay</option>
-                                <option value="pavel">Pavel Shvets</option>
-                                <option value="merlot">Grand Merlot</option>
-                                <option value="trinchero">Trinchero</option>
+                                <option value="romanee">Romanée-Conti</option>
+                                <option value="petrus">Pétrus</option>
+                                <option value="screaming-eagle">Screaming Eagle</option>
+                                <option value="chateau-margaux">Château Margaux</option>
+                                <option value="lafite">Chateau Lafite Rothshild</option>
                             </select>
                         </div>
                         
@@ -599,10 +626,7 @@
                         </div>
                         
                         <div class="form-actions">
-                            <div class="form-actions">
                             <button type="submit" class="form-submit-btn">УВІЙТИ</button>
-                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
-                        </div>
                             <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
                         </div>
                     </form>
