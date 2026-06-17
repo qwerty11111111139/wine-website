@@ -36,7 +36,7 @@
         <div class="container">
             <!-- Left Sidebar - Menu -->
             <aside class="sidebar">
-                <a href="cabinet.html" class="sidebar-link" data-section="profile">
+                <a href="cabinet.php" class="sidebar-link" data-section="profile">
                     <span class="link-icon">👤</span>
                     <span class="link-text">ОСОБИСТІ ДАНІ</span>
                 </a>
@@ -70,6 +70,20 @@
                 <div class="products-grid" id="favorites-grid">
                     <!-- Тут будуть динамічно завантажені уподобані товари -->
                 </div>
+                <template id="favorite-card-template" hidden>
+                    <div class="wine-card product-card">
+                        <div class="wine-image"><img src="" alt=""></div>
+                        <div class="wine-info">
+                            <h3>Назва вина</h3>
+                            <p class="wine-type">Ціна: 0 ₴</p>
+                            <div class="product-actions">
+                                <button class="product-btn">ПЕРЕГЛЯНУТИ ТОВАР</button>
+                                <button class="buy-btn" data-name="" data-price="">КУПИТИ</button>
+                                <button class="remove-btn">ВИДАЛИТИ</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
                 <div id="no-favorites" class="no-favorites" style="display: none;">
                     <p>У вас поки що немає уподобаних товарів.</p>
                     <a href="wine.html" class="btn-primary">Переглянути колекцію вин</a>

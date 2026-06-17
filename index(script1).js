@@ -590,6 +590,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     loginForm.reset();
+
+                    // Перенаправлення в кабінет після успіху
+                    setTimeout(() => {
+                        window.location.href = 'cabinet.php';
+                    }, 1500);
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -666,6 +671,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     registerForm.reset();
+
+                    // Перенаправлення в кабінет після успіху
+                    setTimeout(() => {
+                        window.location.href = 'cabinet.php';
+                    }, 1500);
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -739,7 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectors = ['#loginBtn', '.login-btn', '.btn-login'];
         let replaced = false;
 
-        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
         const title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
 
         selectors.forEach(sel => {

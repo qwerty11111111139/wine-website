@@ -121,8 +121,6 @@ try {
                     ['Vega Sicilia Único', '540.000', 'img1/Vega Sicilia Único.jpg', 'Вино', 'Детальний опис вина 8.'],
                     ['Domaine de la Romanée-Conti Montrachet', '890.000', 'img1/Domaine de la Romanée-Conti Montrachet.jpg', 'Вино', 'Детальний опис вина 9.'],
                     ['Domaine Leflaive Chevalier-Montrachet', ' 510 000', 'img1/Domaine Leflaive Chevalier-Montrachet.jpg', 'Вино', 'Детальний опис вина 10.'],
-                    ['Назва вина 11', '700.00', 'img1/wine11.jpg', 'Вино', 'Детальний опис вина 11.'],
-                    ['Назва вина 12', '880.00', 'img1/wine12.jpg', 'Вино', 'Детальний опис вина 12.'],
                     ['Louis Roederer Cristal', ' 480.000', 'img1/Louis Roederer Cristal.jpg', 'Вино', 'Детальний опис вина 13.'],
                     ['Salon Le Mesnil Blanc de Blancs', '420.000', 'img1/Salon Le Mesnil Blanc de Blancs.jpg', 'Вино', 'Детальний опис вина 14.'],
                     ['Armand de Brignac', '395.000', 'img1/Armand de Brignac.jpg', 'Вино', 'Детальний опис вина 15.'],
@@ -157,17 +155,26 @@ try {
                 password VARCHAR(255) NOT NULL,
                 role VARCHAR(50) DEFAULT 'user',
                 is_club_member TINYINT(1) NOT NULL DEFAULT 0,
+                letter_shown TINYINT(1) NOT NULL DEFAULT 0,
+                is_vip TINYINT(1) NOT NULL DEFAULT 0,
+                bonuses INT NOT NULL DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             ";
             $pdo->exec($createUsersSQL);
 
-            // Ensure is_club_member column exists on older installations
+            // Ensure VIP and bonus columns exist on older installations
             try {
                 $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_club_member TINYINT(1) NOT NULL DEFAULT 0");
+                $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS letter_shown TINYINT(1) NOT NULL DEFAULT 0");
+                $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS is_vip TINYINT(1) NOT NULL DEFAULT 0");
+                $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS bonuses INT NOT NULL DEFAULT 0");
             } catch (PDOException $e) {
                 // Some MySQL versions may not support IF NOT EXISTS - try naive add and ignore failure
                 try { $pdo->exec("ALTER TABLE users ADD COLUMN is_club_member TINYINT(1) NOT NULL DEFAULT 0"); } catch (PDOException $e2) { /* ignore */ }
+                try { $pdo->exec("ALTER TABLE users ADD COLUMN letter_shown TINYINT(1) NOT NULL DEFAULT 0"); } catch (PDOException $e3) { /* ignore */ }
+                try { $pdo->exec("ALTER TABLE users ADD COLUMN is_vip TINYINT(1) NOT NULL DEFAULT 0"); } catch (PDOException $e4) { /* ignore */ }
+                try { $pdo->exec("ALTER TABLE users ADD COLUMN bonuses INT NOT NULL DEFAULT 0"); } catch (PDOException $e5) { /* ignore */ }
             }
         } catch (\PDOException $e) {
             error_log('Failed to ensure users table: ' . $e->getMessage());
@@ -274,25 +281,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'login') {
         exit;
     }
 
-    // Explicitly select the role column to ensure it is returned
     $stmt = $pdo->prepare("SELECT id, name, email, role, password, is_club_member FROM users WHERE email = ? OR phone = ?");
     $stmt->execute([$login, $login]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        // Determine role from DB if available, fallback to legacy check
         $role = $user['role'] ?? (($user['email'] === 'admin@gmail.com') ? 'admin' : 'user');
 
-        // Persist session after successful login
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['user_role'] = $role;
-        // Force integer type for the membership flag
         $_SESSION['is_club_member'] = (int)($user['is_club_member'] ?? 0);
 
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'message' => 'Вхід успішний',
             'role' => $role,
             'user' => [
@@ -380,6 +383,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'update_profile') {
         $_SESSION['user_email'] = $user['email'];
 
         echo json_encode(['success' => true, 'user' => $user, 'message' => 'Профіль оновлено']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'SQL помилка: ' . $e->getMessage()]);
+    }
+    exit;
+}
+
+// =========================================================
+// MARK VIP LETTER SHOWN (POST) - ?action=mark_letter_shown
+// =========================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'mark_letter_shown') {
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false, 'error' => 'not_logged_in', 'message' => 'Будь ласка, увійдіть щоб завершити дію']);
+        exit;
+    }
+
+    $user_id = $_SESSION['user_id'];
+
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET letter_shown = 1 WHERE id = ?");
+        $stmt->execute([$user_id]);
+
+        echo json_encode(['success' => true, 'message' => 'VIP-лист позначено як показаний']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'SQL помилка: ' . $e->getMessage()]);
     }
@@ -823,7 +848,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'get_products') {
         $stmt = $pdo->prepare("SELECT id, name, price, image, category, description, created_at FROM products ORDER BY id DESC");
         $stmt->execute();
         $products = $stmt->fetchAll();
-        echo json_encode(['success' => true, 'products' => $products]);
+
+        // Exclude specific unwanted product(s) from the API response.
+        $excludedProductIds = [871641];
+        $excludedProductNames = ['Назва вина 11', 'Назва вина 12'];
+        $products = array_filter($products, function ($p) use ($excludedProductIds, $excludedProductNames) {
+            $id = isset($p['id']) ? intval($p['id']) : 0;
+            $name = isset($p['name']) ? trim($p['name']) : '';
+            return !in_array($id, $excludedProductIds, true) && !in_array($name, $excludedProductNames, true);
+        });
+
+        echo json_encode(['success' => true, 'products' => array_values($products)]);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'SQL помилка: ' . $e->getMessage()]);
     }

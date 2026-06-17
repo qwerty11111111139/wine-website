@@ -164,10 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.className = 'user-btn';
                 el.textContent = userName;
                 if (tagName.toLowerCase() === 'a') {
-                    el.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                    el.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
                 } else {
                     el.addEventListener('click', () => {
-                        window.location.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                        window.location.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
                     });
                 }
                 el.title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
@@ -883,6 +883,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     loginForm.reset();
+
+                    // Перенаправлення в кабінет після успіху
+                    setTimeout(() => {
+                        window.location.href = 'cabinet.php';
+                    }, 1500);
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -959,6 +964,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     registerForm.reset();
+
+                    // Перенаправлення в кабінет після успіху
+                    setTimeout(() => {
+                        window.location.href = 'cabinet.php';
+                    }, 1500);
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -1020,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let replaced = false;
 
         // choose destination based on role
-        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
         const title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
 
         selectors.forEach(sel => {

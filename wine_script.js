@@ -60,18 +60,6 @@ const wineData = {
         description: 'Детальний опис вина 10. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
         price: 'Ціна: 950 ₴'
     },
-    11: {
-        image: 'wine11.jpg',
-        title: 'Назва вина 11',
-        description: 'Детальний опис вина 11. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
-        price: 'Ціна: 700 ₴'
-    },
-    12: {
-        image: 'wine12.jpg',
-        title: 'Назва вина 12',
-        description: 'Детальний опис вина 12. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
-        price: 'Ціна: 880 ₴'
-    },
     13: {
         image: 'wine13.jpg',
         title: 'Назва вина 13',
@@ -228,8 +216,28 @@ function openModalFromHash() {
     }
 }
 
+function openOrderModalFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const buyParam = params.get('buy');
+    if (!buyParam) return;
+    const m = String(buyParam).match(/(\d+)/);
+    if (!m || !m[1]) return;
+
+    const productId = m[1];
+    const data = wineData[productId];
+    if (!data) return;
+
+    const basePrice = parsePriceValue(data.price || '') || 0;
+    setOrderModalProduct({ name: data.title || data.name || 'Обраний товар', basePrice });
+    openOrderModal();
+    history.replaceState(null, '', window.location.pathname);
+}
+
 // Відкрити модаль, якщо хеш присутній при завантаженні
-document.addEventListener('DOMContentLoaded', openModalFromHash);
+document.addEventListener('DOMContentLoaded', function() {
+    openModalFromHash();
+    openOrderModalFromQuery();
+});
 // І реагувати на зміну хеша під час перебування на сторінці
 window.addEventListener('hashchange', openModalFromHash);
 
@@ -251,7 +259,7 @@ async function checkUserSessionForWine() {
             // Інакше — просто замінюємо локальний btn
             const btn = document.querySelector('.btn-login');
             if (btn) {
-                const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
 
                 const userLink = document.createElement('a');
                 userLink.className = 'user-btn';
@@ -306,14 +314,6 @@ function renderClubMembersSection() {
                     <h3>Château Margaux (Ексклюзив)</h3>
                     <p class="price">Ціна: 980 ₴</p>
                     <button class="btn-buy" data-wine-name="Château Margaux (Ексклюзив)">Купити</button>
-                </div>
-            </div>
-            <div class="wine-card">
-                <img src="img1/Domaine de la Romanée-Conti Montrachet.jpg" alt="Exclusive 3">
-                <div class="modal-info">
-                    <h3>Domaine de la Romanée (Ексклюзив)</h3>
-                    <p class="price">Ціна: 870 ₴</p>
-                    <button class="btn-buy" data-wine-name="Domaine de la Romanée (Ексклюзив)">Купити</button>
                 </div>
             </div>
             <div class="wine-card">
@@ -427,61 +427,23 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// --- НОВА ЛОГІКА: Обробка кнопок "КУПИТИ" щоб відкривати глобальний order modal ---
-document.addEventListener('click', async function(e) {
-    if (e.target && e.target.classList.contains('btn-buy')) {
-        // знайти назву вина у найближчому modal або картці
-        const btn = e.target;
-        const wineName = btn.getAttribute('data-wine-name') || (btn.closest('.modal-info') && btn.closest('.modal-info').querySelector('.modal-region-title') ? btn.closest('.modal-info').querySelector('.modal-region-title').textContent.trim() : '') || (btn.closest('.wine-card') && btn.closest('.wine-card').querySelector('h3') ? btn.closest('.wine-card').querySelector('h3').textContent.trim() : '');
-
-        openOrderModal(wineName);
-    }
-});
-
-function openOrderModal(productName) {
-    const modal = document.getElementById('modal-order');
-    if (!modal) return;
-
-    document.getElementById('orderProductName').textContent = productName;
-    document.getElementById('orderProduct').value = productName;
-
-    // Якщо користувач залогінений — підвантажити його дані
-    fetch('api.php?action=check_session', { credentials: 'same-origin' }).then(r => r.json()).then(data => {
-        if (data && data.logged_in) {
-            const user = data.user || {};
-            if (user.name) document.getElementById('orderName').value = user.name;
-            if (user.email) document.getElementById('orderEmail').value = user.email;
-        }
-    }).catch(() => {});
-
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeOrderModal() {
-    const modal = document.getElementById('modal-order');
-    if (!modal) return;
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
 // Submit order form
 const orderForm = document.getElementById('orderForm');
 if (orderForm) {
     orderForm.addEventListener('submit', async function(e) {
-        // Prevent native form submission as first action
         e.preventDefault();
 
-        const payload = {
-            product_name: document.getElementById('orderProduct').value,
-            quantity: parseInt(document.getElementById('orderQuantity').value || '1', 10),
-            customer_name: document.getElementById('orderName').value.trim(),
-            email: document.getElementById('orderEmail').value.trim(),
-            phone: document.getElementById('orderPhone').value.trim()
-        };
+        const orderProduct = document.getElementById('orderProduct')?.value.trim();
+        const quantity = Math.max(1, parseInt(document.getElementById('orderQuantity')?.value || '1', 10));
+        const customerName = document.getElementById('orderName')?.value.trim();
+        const email = document.getElementById('orderEmail')?.value.trim();
+        const phone = document.getElementById('orderPhone')?.value.trim();
+        const bonusPoints = Math.max(0, parseInt(document.getElementById('bonusInput')?.value.replace(/[^0-9]/g, '') || '0', 10));
+        const basePrice = orderModalState.basePrice || 0;
+        const totalDue = basePrice * quantity;
+        const finalAmount = Math.max(0, totalDue - bonusPoints * 10);
 
-        // simple validation
-        if (!payload.product_name || !payload.customer_name || !payload.email || !payload.phone) {
+        if (!orderProduct || !customerName || !email || !phone) {
             alert('Будь ласка, заповніть усі поля');
             return;
         }
@@ -490,7 +452,17 @@ if (orderForm) {
             const resp = await fetch('api.php?action=create_order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+                body: JSON.stringify({
+                    product_name: orderProduct,
+                    quantity: quantity,
+                    customer_name: customerName,
+                    email: email,
+                    phone: phone,
+                    base_price: basePrice,
+                    bonus_points: bonusPoints,
+                    total_due: totalDue,
+                    final_amount: finalAmount
+                }),
                 credentials: 'same-origin'
             });
             const data = await resp.json();
@@ -503,7 +475,7 @@ if (orderForm) {
             }
         } catch (err) {
             console.error('Order error:', err);
-            alert('Помилка мережі при оформленні замовлення. Спробуйте пізніше.');
+            alert('Помилка мережі при оформленні замовленні замовлення. Спробуйте пізніше.');
         }
     });
 }
@@ -677,8 +649,15 @@ async function loadProductsFromServer() {
             return;
         }
 
-        // The API returns products ordered by id DESC — we want to append new products at the end (older -> earlier in list), so reverse
-        const products = (data.products || []).slice().reverse();
+        // Exclude specific unwanted products from server-loaded data.
+        const excludedProductIds = new Set([871641]);
+        const excludedProductNames = new Set(['Назва вина 11', 'Назва вина 12']);
+        const products = (data.products || [])
+            .filter(p => {
+                const name = (p.name || '').trim();
+                return !excludedProductIds.has(Number(p.id)) && !excludedProductNames.has(name);
+            })
+            .slice().reverse();
         const grid = document.querySelector('.grid');
         if (!grid) return;
 
@@ -861,7 +840,94 @@ function filterWineCards(term) {
 
 console.log('Wine Collection website loaded successfully! (search enabled)');
 
-/* --- Order modal wiring --- */
+const orderModalState = {
+    productName: '',
+    basePrice: 0,
+    quantity: 1,
+    bonusPoints: 0
+};
+
+function parsePriceValue(text) {
+    if (!text) return 0;
+    const normalized = String(text).replace(/,/g, '').replace(/[^0-9]/g, '');
+    return normalized ? parseInt(normalized, 10) : 0;
+}
+
+function formatCurrency(amount) {
+    const value = Number(amount) || 0;
+    return '₴ ' + value.toLocaleString('uk-UA');
+}
+
+function updateOrderPrices() {
+    const quantityInput = document.getElementById('orderQuantity');
+    const bonusInput = document.getElementById('bonusInput');
+    const dueEl = document.getElementById('receiptDueAmount');
+    const finalEl = document.getElementById('receiptFinalAmount');
+    const unitPriceEl = document.getElementById('orderProductUnitPrice');
+
+    const quantity = Math.max(1, parseInt(quantityInput?.value || '1', 10) || 1);
+    const bonusPoints = Math.max(0, parseInt(String(bonusInput?.value || '').replace(/[^0-9]/g, ''), 10) || 0);
+    const dueAmount = orderModalState.basePrice * quantity;
+    const finalAmount = Math.max(0, dueAmount - bonusPoints * 10);
+
+    orderModalState.quantity = quantity;
+    orderModalState.bonusPoints = bonusPoints;
+
+    if (dueEl) dueEl.textContent = formatCurrency(dueAmount);
+    if (finalEl) finalEl.textContent = `${formatCurrency(finalAmount)} UAH`;
+    if (unitPriceEl) unitPriceEl.textContent = `${formatCurrency(orderModalState.basePrice)} за одиницю`;
+}
+
+function setOrderModalProduct({ name, basePrice }) {
+    orderModalState.productName = name || 'Обраний товар';
+    orderModalState.basePrice = Math.max(0, Number(basePrice) || 0);
+    orderModalState.quantity = 1;
+    orderModalState.bonusPoints = 0;
+
+    const nameEl = document.getElementById('orderProductName');
+    const hiddenInput = document.getElementById('orderProduct');
+    const quantityInput = document.getElementById('orderQuantity');
+    const bonusInput = document.getElementById('bonusInput');
+    const receiptName = document.getElementById('receiptProductName');
+
+    if (nameEl) nameEl.textContent = orderModalState.productName;
+    if (hiddenInput) hiddenInput.value = orderModalState.productName;
+    if (quantityInput) quantityInput.value = '1';
+    if (bonusInput) bonusInput.value = '';
+    if (receiptName) receiptName.textContent = orderModalState.productName;
+
+    updateOrderPrices();
+}
+
+function findPriceFromElement(element) {
+    if (!element) return 0;
+    const priceEl = element.querySelector('.modal-price, .wine-price, .price-current, .product-price, .price, .wine-type');
+    if (priceEl && priceEl.textContent) {
+        return parsePriceValue(priceEl.textContent);
+    }
+    const dataPrice = element.dataset.basePrice || element.dataset.price || '';
+    return parsePriceValue(dataPrice);
+}
+
+function getSourceProductInfo(btn) {
+    const card = btn.closest('.modal-content') || btn.closest('.region-modal') || btn.closest('.wine-card');
+    let name = btn.dataset.name || btn.dataset.wineName || '';
+    let price = 0;
+
+    if (card) {
+        if (!name) {
+            const titleEl = card.querySelector('h1, h2, h3, .modal-region-title, .modal-title, .wine-title, .order-product-name');
+            if (titleEl) name = titleEl.textContent.trim();
+        }
+        price = findPriceFromElement(card);
+    }
+
+    if (!price && btn.dataset.price) price = parsePriceValue(btn.dataset.price);
+    if (!price && card && card.dataset.basePrice) price = parsePriceValue(card.dataset.basePrice);
+
+    return { name: name || 'Обраний товар', price };
+}
+
 function openOrderModal() {
     const modal = document.getElementById('modal-order');
     if (!modal) return;
@@ -869,175 +935,67 @@ function openOrderModal() {
     modal.style.display = 'flex';
     void modal.offsetWidth;
     modal.classList.add('active');
-    const overlay = modal.querySelector('.modal-overlay');
-    const content = modal.querySelector('.modal-content');
-    if (overlay) overlay.style.zIndex = '10000';
-    if (content) content.style.zIndex = '10001';
 }
 
 function closeOrderModal() {
     const modal = document.getElementById('modal-order');
     if (!modal) return;
     modal.classList.remove('active');
-    const overlay = modal.querySelector('.modal-overlay');
-    const content = modal.querySelector('.modal-content');
-    if (overlay) overlay.style.zIndex = '';
-    if (content) content.style.zIndex = '';
     setTimeout(() => {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }, 300);
 }
 
-// Populate select and wire buy buttons
-document.addEventListener('DOMContentLoaded', () => {
-    const select = document.getElementById('orderSelect');
-    if (select && typeof wineData === 'object') {
-        Object.keys(wineData).forEach(id => {
-            const opt = document.createElement('option');
-            opt.value = id;
-            opt.textContent = wineData[id].title || `Wine ${id}`;
-            select.appendChild(opt);
-        });
-
-        function getOrderImageElement() {
-            return document.getElementById('order-wine-img') || document.getElementById('orderModalImg') || document.querySelector('#modal-order .modal-left img');
-        }
-
-        select.addEventListener('change', (e) => {
-            const id = e.target.value;
-            const img = getOrderImageElement();
-            const nameP = document.getElementById('orderProductName');
-            const hidden = document.getElementById('orderProduct');
-            if (wineData[id]) {
-                if (wineData[id].image && img) img.src = wineData[id].image;
-                nameP.textContent = wineData[id].title;
-                hidden.value = wineData[id].title;
-            } else {
-                nameP.textContent = select.options[select.selectedIndex].textContent;
-                hidden.value = nameP.textContent;
-            }
-        });
+function closeSourceModal(btn) {
+    const wineId = btn.dataset.wineId || btn.getAttribute('data-wine-id') || null;
+    if (wineId) {
+        closeModal(wineId);
+        return;
     }
+    const parentModal = btn.closest('.region-modal, .modal');
+    if (parentModal) {
+        parentModal.classList.remove('active');
+        setTimeout(() => { parentModal.style.display = 'none'; }, 300);
+    }
+}
 
-    // Fixed handler: scope image & title lookup to the clicked button's nearest container (.modal-content or .wine-card)
-    document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.btn-buy, .btn-buy-now');
-        if (!btn) return;
+function attachOrderModalHandlers() {
+    const quantityInput = document.getElementById('orderQuantity');
+    const bonusInput = document.getElementById('bonusInput');
+    const bonusButtons = Array.from(document.querySelectorAll('.bonus-buttons button'));
 
-        // Ignore clicks inside order modal itself
-        if (btn.closest('#modal-order')) return;
+    if (quantityInput) quantityInput.addEventListener('input', updateOrderPrices);
+    if (bonusInput) bonusInput.addEventListener('input', updateOrderPrices);
 
-        e.preventDefault();
-
-        // 1) Determine the nearest container for this button (prefer modal-content)
-        let currentCard = btn.closest('.modal-content') || btn.closest('.region-modal') || btn.closest('.modal') || btn.closest('.wine-card');
-
-        // 2) Find image only inside that container
-        let imgEl = null;
-        if (currentCard) {
-            imgEl = currentCard.querySelector('.modal-background img, .wine-image img, img');
-        }
-
-        let imgSrc = '';
-        if (imgEl) imgSrc = imgEl.src || imgEl.getAttribute('src') || '';
-        if (!imgSrc) imgSrc = btn.dataset.img || btn.getAttribute('data-img') || '';
-
-        // 3) Find name/title only inside that container
-        let wineName = '';
-        if (currentCard) {
-            const titleEl = currentCard.querySelector('h1, h2, .modal-region-title, .modal-title, .wine-title, h3');
-            if (titleEl) wineName = titleEl.textContent.trim();
-        }
-        wineName = wineName || btn.dataset.name || btn.dataset.wineName || btn.getAttribute('data-name') || '';
-
-        // 4) wine id (if any)
-        let wineId = btn.dataset.wineId || btn.getAttribute('data-wine-id') || null;
-        if (!wineId && currentCard && currentCard.id) {
-            const m = currentCard.id.match(/modal-(\d+)/);
-            if (m) wineId = m[1];
-        }
-
-        console.log('Клік по вину:', wineName);
-        console.log('Знайдено фото:', imgSrc);
-
-        // 5) Close source modal if it is a modal
-        if (wineId) closeModal(wineId);
-        else if (currentCard && (currentCard.classList.contains('region-modal') || currentCard.classList.contains('modal') || currentCard.classList.contains('modal-content'))) {
-            const parentModal = currentCard.closest('.region-modal') || currentCard.closest('.modal');
-            if (parentModal) {
-                parentModal.classList.remove('active');
-                setTimeout(() => { parentModal.style.display = 'none'; }, 300);
+    bonusButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const bonusValue = String(button.textContent || '').replace(/[^0-9]/g, '');
+            if (bonusInput) {
+                bonusInput.value = bonusValue;
+                updateOrderPrices();
             }
-        }
-
-        // 6) Open order modal
-        openOrderModal();
-
-        // 7) Insert image into prepared tag
-        const orderImg = document.getElementById('order-wine-img') || document.getElementById('orderModalImg') || document.querySelector('#modal-order .modal-left img');
-        if (orderImg) {
-            if (imgSrc) orderImg.src = imgSrc;
-            else if (wineId && wineData[wineId] && wineData[wineId].image) orderImg.src = wineData[wineId].image;
-            else {
-                orderImg.removeAttribute('src');
-                console.warn('Не вдалося знайти зображення у попередньому вікні!');
-            }
-        }
-
-        // 8) Select / input selection
-        const orderModal = document.getElementById('modal-order');
-        const select = document.getElementById('orderSelect') || (orderModal ? orderModal.querySelector('select[name="product_id"], select[name="wine_name"], select') : null);
-        const orderNameEl = document.getElementById('orderProductName') || (orderModal ? orderModal.querySelector('.order-product-name') : null);
-        const hiddenInput = document.getElementById('orderProduct') || (orderModal ? orderModal.querySelector('input[name="product_name"]') : null);
-
-        let optionFound = false;
-        if (select) {
-            if (wineId) {
-                const opt = Array.from(select.options).find(o => o.value === String(wineId));
-                if (opt) { select.value = String(wineId); optionFound = true; }
-            }
-
-            if (!optionFound && wineName) {
-                const opt = Array.from(select.options).find(o => o.textContent.includes(wineName));
-                if (opt) { select.value = opt.value; optionFound = true; }
-            }
-
-            if (!optionFound && wineName) {
-                const tmp = document.createElement('option');
-                tmp.value = wineId ? String(wineId) : wineName;
-                tmp.textContent = wineName;
-                select.appendChild(tmp);
-                select.value = tmp.value;
-            }
-
-            select.dispatchEvent(new Event('change'));
-        }
-
-        if (orderNameEl) orderNameEl.textContent = wineName || (select && select.options[select.selectedIndex] ? select.options[select.selectedIndex].textContent : '');
-        if (hiddenInput) hiddenInput.value = wineName || (select && select.options[select.selectedIndex] ? select.options[select.selectedIndex].textContent : '');
-
-        // focus name input
-        const nameField = document.getElementById('orderName'); if (nameField) nameField.focus();
+        });
     });
 
-    // Keep hidden input synced if select changes (backup)
-    const selectEl2 = document.getElementById('orderSelect');
-    if (selectEl2) {
-        selectEl2.addEventListener('change', (e) => {
-            const val = e.target.value;
-            const orderNameEl = document.getElementById('orderProductName');
-            const hiddenInput = document.getElementById('orderProduct');
-            if (wineData[val]) {
-                orderNameEl.textContent = wineData[val].title;
-                hiddenInput.value = wineData[val].title;
-                const orderImg = document.getElementById('orderModalImg');
-                if (orderImg && wineData[val].image) orderImg.src = wineData[val].image;
-            } else {
-                const text = e.target.options[e.target.selectedIndex].textContent;
-                orderNameEl.textContent = text;
-                hiddenInput.value = text;
-            }
+    document.addEventListener('click', (event) => {
+        const btn = event.target.closest('.btn-buy, .btn-buy-now, .pay-btn');
+        if (!btn) return;
+        if (btn.closest('#modal-order')) return;
+
+        event.preventDefault();
+        const sourceInfo = getSourceProductInfo(btn);
+        setOrderModalProduct({
+            name: sourceInfo.name,
+            basePrice: sourceInfo.price,
+            imageSrc: sourceInfo.imageSrc
         });
-    }
-});
+        closeSourceModal(btn);
+        openOrderModal();
+
+        const nameField = document.getElementById('orderName');
+        if (nameField) nameField.focus();
+    });
+}
+
+attachOrderModalHandlers();

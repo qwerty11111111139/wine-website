@@ -1028,92 +1028,331 @@ body {
 
 /* === Order modal specific styles === */
 .region-modal#modal-order .modal-content {
-    display: flex;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+    gap: 28px;
     align-items: stretch;
+    padding: 36px;
+    background: transparent;
+    box-shadow: none;
 }
 
-.region-modal#modal-order .modal-left {
-    flex: 0 0 320px;
+.region-modal#modal-order .modal-content.order-modal-content {
+    background: transparent;
+}
+
+.region-modal#modal-order .order-panel {
+    background: #ffffff;
+    border-radius: 32px;
+    box-shadow: 0 30px 80px rgba(33, 35, 47, 0.14);
+    padding: 32px;
     display: flex;
-    align-items: stretch;
-    background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
+    flex-direction: column;
+    gap: 28px;
+    position: relative;
+    overflow: visible;
 }
 
-.region-modal#modal-order .modal-left img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 6px;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.6);
-    display: block;
+.region-modal#modal-order .order-panel-right {
+    background: transparent;
+    padding: 28px 28px 32px;
+    justify-content: center;
 }
 
-.region-modal#modal-order .modal-info {
-    padding: 24px;
+.region-modal#modal-order .order-panel-header {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.region-modal#modal-order .order-product-name {
-    font-weight: 600;
-    color: #e0e0e0;
-    margin-bottom: 4px;
+.region-modal#modal-order .order-product-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 0 0;
+    border-top: 1px solid rgba(16, 24, 56, 0.08);
 }
 
-.region-modal#modal-order .form-label {
-    color: var(--gold);
+.region-modal#modal-order .order-product-label {
     text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    display: block;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: #8a8e9c;
+}
+
+.region-modal#modal-order .order-product-name {
+    font-size: 1.05rem;
+    color: #11131d;
+}
+
+.region-modal#modal-order .order-brand {
+    font-size: 0.82rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #5d5d66;
+    font-weight: 600;
+}
+
+.region-modal#modal-order .order-panel-title {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: -0.04em;
+    color: #11131d;
+    line-height: 1.05;
+}
+
+.region-modal#modal-order .order-panel-subtitle {
+    margin: 0;
+    color: #6f7384;
+    font-size: 0.95rem;
+    max-width: 360px;
+}
+
+.region-modal#modal-order .payment-input-group,
+.region-modal#modal-order .payment-field,
+.region-modal#modal-order .bonus-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.region-modal#modal-order .payment-label,
+.region-modal#modal-order .bonus-label {
+    font-size: 0.88rem;
+    color: #5f6277;
+    letter-spacing: 0.02em;
+}
+
+.region-modal#modal-order .card-input-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.region-modal#modal-order .card-input-segment {
+    min-width: 0;
+}
+
+.region-modal#modal-order .card-input-segment input {
+    width: 100%;
+    padding: 16px 14px;
+    border: 1px solid #d8dde6;
+    border-radius: 18px;
+    background: #fbfcff;
+    color: #1b1f31;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.region-modal#modal-order .card-input-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.region-modal#modal-order .card-brand {
+    font-size: 0.85rem;
+    color: #1b1f31;
+    font-weight: 700;
+}
+
+.region-modal#modal-order .card-check {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #0f6cff;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(15, 108, 255, 0.18);
+}
+
+.region-modal#modal-order .payment-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 18px;
 }
 
 .region-modal#modal-order .form-control {
     width: 100%;
-    background: #121212;
-    color: #e0e0e0;
-    border: 1px solid #333;
-    padding: 10px;
-    border-radius: 6px;
+    background: #fbfcff;
+    color: #1b1f31;
+    border: 1px solid #d8dde6;
+    padding: 16px 14px;
+    border-radius: 18px;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1rem;
+}
+
+.region-modal#modal-order .form-control:focus {
+    border-color: #0f6cff;
+    box-shadow: 0 0 0 6px rgba(15, 108, 255, 0.12);
+}
+
+.region-modal#modal-order .password-input {
+    position: relative;
+}
+
+.region-modal#modal-order .keyboard-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6f7384;
+    font-size: 1rem;
+}
+
+.region-modal#modal-order .pay-now-btn {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 18px 22px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #0f6cff, #246bff);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: 0 18px 45px rgba(15, 108, 255, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.region-modal#modal-order .pay-now-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 22px 50px rgba(15, 108, 255, 0.35);
+}
+
+.region-modal#modal-order .receipt-card {
+    position: relative;
+    padding-top: 190px;
+    border-radius: 32px;
+    background: #ffffff;
+    overflow: visible;
+    box-shadow: inset 0 0 0 1px rgba(38, 44, 68, 0.08);
+}
+
+.region-modal#modal-order .premium-vip-card {
+    position: absolute;
+    top: 30px; /* Можеш міняти цей відступ, щоб підняти/опустити карту */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 56px);
+    max-width: 360px;
+    height: auto;
+    
+    /* ВИПРАВЛЕННЯ: */
+    border-radius: 0;           /* Прибираємо заокруглення, щоб не було білих кутів */
+    background: transparent;    /* Прибираємо будь-який фон */
+    box-shadow: none;           /* Прибираємо тінь, якщо вона створює білий контур */
+    
+    z-index: 10;
+    pointer-events: none;
+}
+
+.region-modal#modal-order .receipt-content {
+    display: grid;
+    gap: 18px;
+    padding: 140px 24px 24px;
+    position: relative;
+    z-index: 2;
+    background: transparent;
+}
+
+.region-modal#modal-order .receipt-label {
+    color: #5f6277;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+}
+
+.region-modal#modal-order .receipt-value {
+    color: #11131d;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.region-modal#modal-order .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 18px;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(38, 44, 68, 0.06);
+    color: #333645;
+}
+
+.region-modal#modal-order .receipt-row span {
+    color: #6f7384;
     font-size: 0.95rem;
 }
 
-.region-modal#modal-order .form-control.short { width: 100px; }
-
-.region-modal#modal-order .form-control:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 6px rgba(212,175,55,0.06);
+.region-modal#modal-order .receipt-row strong {
+    font-size: 0.95rem;
+    color: #11131d;
 }
 
-.region-modal#modal-order .form-actions {
-    margin-top: 8px;
+.region-modal#modal-order .bonus-input-field {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid #d8dde6;
+    border-radius: 18px;
+    background: #ffffff;
 }
 
-.region-modal#modal-order .btn-buy {
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 10px 18px;
-    border-radius: 6px;
+.region-modal#modal-order .bonus-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.region-modal#modal-order .bonus-buttons button {
+    flex: 1 1 30%;
+    min-width: 0;
+    padding: 12px 0;
+    border: 1px solid #d8dde6;
+    background: #ffffff;
+    border-radius: 999px;
+    color: #11131d;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: 600;
+    transition: background 0.18s ease, transform 0.18s ease;
 }
 
-.region-modal#modal-order .btn-buy:hover {
-    background: var(--gold);
-    color: var(--dark-bg);
+.region-modal#modal-order .bonus-buttons button:hover,
+.region-modal#modal-order .bonus-buttons button:focus {
+    background: #f0f4ff;
+    transform: translateY(-1px);
+}
+
+.region-modal#modal-order .bonus-buttons button:hover {
+    background: #eef3ff;
+    transform: translateY(-1px);
+}
+
+.region-modal#modal-order .final-price {
+    margin-top: 16px;
+    padding: 22px;
+    border-radius: 24px;
+    background: #ffffff;
+    color: #11131d;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 22px 48px rgba(44, 55, 93, 0.08);
 }
 
 /* Responsive: stack on small screens */
-@media (max-width: 800px) {
-    .region-modal#modal-order .modal-content { flex-direction: column; }
-    .region-modal#modal-order .modal-left { flex: 0 0 auto; width: 100%; height: 36vh; }
-    .region-modal#modal-order .modal-left img { height: 100%; }
+@media (max-width: 900px) {
+    .region-modal#modal-order .modal-content { grid-template-columns: 1fr; padding: 24px; }
+    .region-modal#modal-order .order-panel { padding: 24px; }
+    .region-modal#modal-order .receipt-card { padding-top: 100px; }
 }
 
 

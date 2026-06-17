@@ -43,12 +43,11 @@
         <div class="container">
             <!-- Left Sidebar - Menu -->
             <aside class="sidebar">
-                <a href="cabinet.html" class="sidebar-link active" data-section="profile" aria-current="page">
+                <a href="cabinet.php" class="sidebar-link active" data-section="profile" aria-current="page">
                     <span class="link-icon">👤</span>
                     <span class="link-text">ОСОБИСТІ ДАНІ</span>
                 </a>
                 <nav class="sidebar-nav">
-                    <!-- Тут вставляй свої посилання -->
                     <a href="cabinet_Order_history.html" class="sidebar-link" data-section="orders">
                         <span class="link-icon">📦</span>
                         <span class="link-text">ІСТОРІЯ ЗАМОВЛЕНЬ</span>
@@ -57,41 +56,52 @@
                         <span class="link-icon">❤️</span>
                         <span class="link-text">ОБРАНЕ</span>
                     </a>
-                    
                     <a href="settings.html" class="sidebar-link" data-section="settings">
                         <span class="link-icon">⚙️</span>
                         <span class="link-text">НАЛАШТУВАННЯ</span>
                     </a>
-                    
                     <a href="logout.php" class="sidebar-link">
                         <span class="link-icon">🚪</span>
                         <span class="link-text">Вихід</span>
-                    </a> 
+                    </a>
                 </nav>
             </aside>
 
-            <!-- Right Content - Form -->
+            <!-- Right Content - Static Profile -->
             <section class="content-section">
-                <h3 class="section-title">ОСОБИСТІ ДАНІ</h3>
-                
-                <form class="user-form" id="userForm">
-                    <div class="form-group">
-                        <label for="name">Ваше ім'я</label>
-                        <input type="text" id="name" name="name" placeholder="Ім'я" required>
-                    </div>
+                <h2 class="section-title">ОСОБИСТІ ДАНІ</h2>
 
-                    <div class="form-group">
-                        <label for="email">Електронна пошта</label>
-                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
-                    </div>
+                <div class="profile-container">
+                    <form id="avatar-form" action="upload_avatar.php" method="POST" enctype="multipart/form-data">
+                        <label for="avatar-input" class="profile-avatar" title="Завантажити аватар" onclick="document.getElementById('avatar-input').click();" style="cursor:pointer;">
+                            <img src="<?php echo $avatarUrl; ?>" alt="Аватар користувача">
+                        </label>
+                        <input type="file" id="avatar-input" name="avatar_file" accept="image/*" style="display:none;" onchange="document.getElementById('avatar-form').submit();">
+                    </form>
 
-                    <div class="form-group">
-                        <label for="phone">Телефон</label>
-                        <input type="tel" id="phone" name="phone" placeholder="+380 888 888 8888" required>
-                    </div>
+                    <div class="profile-details">
+                        <div class="profile-name-row">
+                            <h2 class="profile-username"><?php echo $name; ?></h2>
+                            <?php if ($vipStatus === 1): ?>
+                                <span class="vip-badge">VIP</span>
+                            <?php endif; ?>
+                        </div>
 
-                    <button type="submit" class="submit-btn">ЗБЕРЕГТИ ЗМІНИ</button>
-                </form>
+                        <?php if ($vipStatus === 0): ?>
+                            <p class="club-status-text">(не є учасником клубу <a href="club_form.php">Приєднатись?</a>)</p>
+                        <?php endif; ?>
+
+                        <div class="profile-info-block">
+                            <p><strong>Ваше ім'я:</strong> <?php echo $name; ?></p>
+                            <p><strong>Електронна пошта:</strong> <?php echo $email; ?></p>
+                            <p><strong>Телефон:</strong> <?php echo $phone; ?></p>
+
+                            <?php if ($vipStatus === 1): ?>
+                                <p class="profile-bonus"><strong>Баланс бонусів:</strong> <span class="bonus-count"><?php echo $bonuses; ?> б.</span></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     </main>

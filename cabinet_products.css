@@ -203,33 +203,34 @@ body {
 /* Products Grid */
 .products-grid {
     display: grid;
-    /* Match wine page: 4 columns on wide screens, responsive fallback */
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 30px;
 }
 
 /* When viewport is narrow, make grid responsive */
 @media (max-width: 1100px) {
-    .products-grid { grid-template-columns: repeat(3, 1fr); }
+    .products-grid { grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); }
 }
-@media (max-width: 800px) {
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
+@media (max-width: 900px) {
     .products-grid { grid-template-columns: 1fr; }
 }
 
-/* Support wine-card styling in cabinet page */
-.products-grid .wine-card {
-    background-color: #1a1a1a;
-    border-radius: 8px;
+/* Support wine-card / product-card styling in cabinet page */
+.products-grid .wine-card,
+.products-grid .product-card {
+    background-color: #111111;
+    border-radius: 14px;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    border: 2px solid rgba(212, 175, 55, 0.12);
+    border: 2px solid rgba(212, 175, 55, 0.16);
     display: flex; /* horizontal layout for thumbnail + info */
-    align-items: center;
-    gap: 16px;
-    padding: 12px;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px;
+    width: 100%;
+    min-width: 500px;
+    max-width: 780px;
+    flex: 1 1 500px;
 }
 
 .products-grid .wine-card:hover {
@@ -281,27 +282,78 @@ body {
     margin-bottom: 8px;
 }
 
-/* Buttons align to the bottom/right inside the info column; stack vertically to save horizontal space */
+/* Buttons align to the bottom/right inside the info column; stack vertically for clarity */
 .products-grid .product-actions {
-    margin-top: 8px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
+    gap: 12px;
+    align-items: stretch;
 }
 
 /* Make action buttons compact and consistent */
-.products-grid .product-actions .product-btn,
-.products-grid .product-actions .remove-btn {
-    min-width: 120px;
-    padding: 0.45rem 0.9rem;
-    font-size: 0.82rem;
+.products-grid .product-actions button {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 999px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+    line-height: 1.2;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-/* Visual distinction for Delete button */
+.products-grid .product-actions .product-btn,
+.products-grid .product-actions .remove-btn,
+.products-grid .product-actions .pay-btn {
+    border: 1px solid;
+    background: transparent;
+    color: #fff;
+}
+
+.products-grid .product-actions .product-btn {
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+.products-grid .product-actions .product-btn:hover {
+    background: rgba(212, 175, 55, 0.12);
+}
+
 .products-grid .product-actions .remove-btn {
-    color: #ff6b6b;
-    border-color: #ff6b6b;
+    border-color: #9b2335;
+    color: #e08a8f;
+}
+
+.products-grid .product-actions .remove-btn:hover {
+    background: rgba(155, 35, 53, 0.14);
+}
+
+.products-grid .product-actions .pay-btn {
+    border-color: #d4af37;
+    background: linear-gradient(135deg, #d4af37 0%, #f4cd3d 100%);
+    color: #11131d;
+    box-shadow: 0 12px 28px rgba(212, 175, 55, 0.24);
+}
+
+.products-grid .product-actions .pay-btn:hover {
+    background: linear-gradient(135deg, #b88b23 0%, #d9b333 100%);
+}
+
+.products-grid .product-actions .buy-btn {
+    border-color: #f4d35f;
+    background: linear-gradient(135deg, #f4d35f 0%, #d4af37 100%);
+    color: #11131d;
+    box-shadow: 0 12px 28px rgba(212, 175, 55, 0.28);
+}
+
+.products-grid .product-actions .buy-btn:hover {
+    background: linear-gradient(135deg, #d4af37 0%, #b78f1f 100%);
 }
 
 /* Responsive: for very small screens, stack image above info */

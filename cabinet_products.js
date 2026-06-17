@@ -238,9 +238,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (noFav) noFav.style.display = 'none';
 
         items.forEach(item => {
-            // Use wine-card markup so layout matches the main wine page, include data-id on product button
+            // Use wine-card / product-card markup so layout matches the main wine page, include data-id on product button
             const card = document.createElement('div');
-            card.className = 'wine-card';
+            card.className = 'wine-card product-card';
             card.innerHTML = `
                 <div class="wine-image">
                     <img src="${item.img}" alt="${item.name}">
@@ -249,7 +249,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${item.name}</h3>
                     <p class="wine-type">${item.price ? item.price : ''}</p>
                     <div class="product-actions">
-                        <button class="product-btn" data-id="${item.product_id}">ПЕРЕГЛЯНУТИ ПРОДУКТ</button>
+                        <button class="product-btn" data-id="${item.product_id}">ПЕРЕГЛЯНУТИ ТОВАР</button>
+                        <button class="buy-btn" data-id="${item.product_id}" data-price="${item.price ? item.price : ''}" data-name="${item.name}">КУПИТИ</button>
                         <button class="remove-btn remove-fav" data-id="${item.product_id}">ВИДАЛИТИ</button>
                     </div>
                 </div>
@@ -293,6 +294,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Fallback: show product modal placeholder
                     const productName = this.closest('.wine-card').querySelector('h3').textContent;
                     showProductModal(productName, event);
+                }
+            });
+        });
+
+        // Підключаємо обробники для кнопки "КУПИТИ"
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                const pid = this.getAttribute('data-id');
+                const name = this.dataset.name || '';
+                const price = this.dataset.price || '';
+                const m = pid && pid.match(/(\d+)/);
+                const idNum = m ? m[1] : pid;
+
+                if (window.location.pathname.endsWith('wine.html')) {
+                    if (typeof setOrderModalProduct === 'function' && typeof openOrderModal === 'function') {
+                        setOrderModalProduct({ name: name, basePrice: parseInt(String(price).replace(/[^0-9]/g, ''), 10) || 0 });
+                        openOrderModal();
+                    } else {
+                        window.location.href = `wine.html?buy=${idNum}`;
+                    }
+                } else {
+                    window.location.href = `wine.html?buy=${idNum}`;
                 }
             });
         });
