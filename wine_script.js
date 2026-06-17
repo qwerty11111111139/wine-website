@@ -60,6 +60,21 @@ const wineData = {
         description: 'Детальний опис вина 10. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
         price: 'Ціна: 950 ₴'
     },
+<<<<<<< HEAD
+=======
+    11: {
+        image: 'wine11.jpg',
+        title: 'Назва вина 11',
+        description: 'Детальний опис вина 11. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
+        price: 'Ціна: 700 ₴'
+    },
+    12: {
+        image: 'wine12.jpg',
+        title: 'Назва вина 12',
+        description: 'Детальний опис вина 12. Тут ви можете вказати інформацію про сорт винограду, регіон виробництва, характеристики смаку та аромату.',
+        price: 'Ціна: 880 ₴'
+    },
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
     13: {
         image: 'wine13.jpg',
         title: 'Назва вина 13',
@@ -216,6 +231,7 @@ function openModalFromHash() {
     }
 }
 
+<<<<<<< HEAD
 function openOrderModalFromQuery() {
     const params = new URLSearchParams(window.location.search);
     const buyParam = params.get('buy');
@@ -238,6 +254,10 @@ document.addEventListener('DOMContentLoaded', function() {
     openModalFromHash();
     openOrderModalFromQuery();
 });
+=======
+// Відкрити модаль, якщо хеш присутній при завантаженні
+document.addEventListener('DOMContentLoaded', openModalFromHash);
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 // І реагувати на зміну хеша під час перебування на сторінці
 window.addEventListener('hashchange', openModalFromHash);
 
@@ -259,7 +279,11 @@ async function checkUserSessionForWine() {
             // Інакше — просто замінюємо локальний btn
             const btn = document.querySelector('.btn-login');
             if (btn) {
+<<<<<<< HEAD
                 const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
+=======
+                const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 
                 const userLink = document.createElement('a');
                 userLink.className = 'user-btn';
@@ -317,6 +341,17 @@ function renderClubMembersSection() {
                 </div>
             </div>
             <div class="wine-card">
+<<<<<<< HEAD
+=======
+                <img src="img1/Domaine de la Romanée-Conti Montrachet.jpg" alt="Exclusive 3">
+                <div class="modal-info">
+                    <h3>Domaine de la Romanée (Ексклюзив)</h3>
+                    <p class="price">Ціна: 870 ₴</p>
+                    <button class="btn-buy" data-wine-name="Domaine de la Romanée (Ексклюзив)">Купити</button>
+                </div>
+            </div>
+            <div class="wine-card">
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                 <img src="img1/Masseto.jpg" alt="Exclusive 4">
                 <div class="modal-info">
                     <h3>Вино Ексклюзив 4</h3>
@@ -427,10 +462,52 @@ document.addEventListener('click', function(e) {
     }
 });
 
+<<<<<<< HEAD
+=======
+// --- НОВА ЛОГІКА: Обробка кнопок "КУПИТИ" щоб відкривати глобальний order modal ---
+document.addEventListener('click', async function(e) {
+    if (e.target && e.target.classList.contains('btn-buy')) {
+        // знайти назву вина у найближчому modal або картці
+        const btn = e.target;
+        const wineName = btn.getAttribute('data-wine-name') || (btn.closest('.modal-info') && btn.closest('.modal-info').querySelector('.modal-region-title') ? btn.closest('.modal-info').querySelector('.modal-region-title').textContent.trim() : '') || (btn.closest('.wine-card') && btn.closest('.wine-card').querySelector('h3') ? btn.closest('.wine-card').querySelector('h3').textContent.trim() : '');
+
+        openOrderModal(wineName);
+    }
+});
+
+function openOrderModal(productName) {
+    const modal = document.getElementById('modal-order');
+    if (!modal) return;
+
+    document.getElementById('orderProductName').textContent = productName;
+    document.getElementById('orderProduct').value = productName;
+
+    // Якщо користувач залогінений — підвантажити його дані
+    fetch('api.php?action=check_session', { credentials: 'same-origin' }).then(r => r.json()).then(data => {
+        if (data && data.logged_in) {
+            const user = data.user || {};
+            if (user.name) document.getElementById('orderName').value = user.name;
+            if (user.email) document.getElementById('orderEmail').value = user.email;
+        }
+    }).catch(() => {});
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+    const modal = document.getElementById('modal-order');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 // Submit order form
 const orderForm = document.getElementById('orderForm');
 if (orderForm) {
     orderForm.addEventListener('submit', async function(e) {
+<<<<<<< HEAD
         e.preventDefault();
 
         const orderProduct = document.getElementById('orderProduct')?.value.trim();
@@ -444,6 +521,21 @@ if (orderForm) {
         const finalAmount = Math.max(0, totalDue - bonusPoints * 10);
 
         if (!orderProduct || !customerName || !email || !phone) {
+=======
+        // Prevent native form submission as first action
+        e.preventDefault();
+
+        const payload = {
+            product_name: document.getElementById('orderProduct').value,
+            quantity: parseInt(document.getElementById('orderQuantity').value || '1', 10),
+            customer_name: document.getElementById('orderName').value.trim(),
+            email: document.getElementById('orderEmail').value.trim(),
+            phone: document.getElementById('orderPhone').value.trim()
+        };
+
+        // simple validation
+        if (!payload.product_name || !payload.customer_name || !payload.email || !payload.phone) {
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
             alert('Будь ласка, заповніть усі поля');
             return;
         }
@@ -452,6 +544,7 @@ if (orderForm) {
             const resp = await fetch('api.php?action=create_order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+<<<<<<< HEAD
                 body: JSON.stringify({
                     product_name: orderProduct,
                     quantity: quantity,
@@ -463,6 +556,9 @@ if (orderForm) {
                     total_due: totalDue,
                     final_amount: finalAmount
                 }),
+=======
+                body: JSON.stringify(payload),
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                 credentials: 'same-origin'
             });
             const data = await resp.json();
@@ -475,7 +571,11 @@ if (orderForm) {
             }
         } catch (err) {
             console.error('Order error:', err);
+<<<<<<< HEAD
             alert('Помилка мережі при оформленні замовленні замовлення. Спробуйте пізніше.');
+=======
+            alert('Помилка мережі при оформленні замовлення. Спробуйте пізніше.');
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
         }
     });
 }
@@ -649,6 +749,7 @@ async function loadProductsFromServer() {
             return;
         }
 
+<<<<<<< HEAD
         // Exclude specific unwanted products from server-loaded data.
         const excludedProductIds = new Set([871641]);
         const excludedProductNames = new Set(['Назва вина 11', 'Назва вина 12']);
@@ -658,6 +759,10 @@ async function loadProductsFromServer() {
                 return !excludedProductIds.has(Number(p.id)) && !excludedProductNames.has(name);
             })
             .slice().reverse();
+=======
+        // The API returns products ordered by id DESC — we want to append new products at the end (older -> earlier in list), so reverse
+        const products = (data.products || []).slice().reverse();
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
         const grid = document.querySelector('.grid');
         if (!grid) return;
 
@@ -840,6 +945,7 @@ function filterWineCards(term) {
 
 console.log('Wine Collection website loaded successfully! (search enabled)');
 
+<<<<<<< HEAD
 const orderModalState = {
     productName: '',
     basePrice: 0,
@@ -928,6 +1034,9 @@ function getSourceProductInfo(btn) {
     return { name: name || 'Обраний товар', price };
 }
 
+=======
+/* --- Order modal wiring --- */
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 function openOrderModal() {
     const modal = document.getElementById('modal-order');
     if (!modal) return;
@@ -935,18 +1044,33 @@ function openOrderModal() {
     modal.style.display = 'flex';
     void modal.offsetWidth;
     modal.classList.add('active');
+<<<<<<< HEAD
+=======
+    const overlay = modal.querySelector('.modal-overlay');
+    const content = modal.querySelector('.modal-content');
+    if (overlay) overlay.style.zIndex = '10000';
+    if (content) content.style.zIndex = '10001';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 }
 
 function closeOrderModal() {
     const modal = document.getElementById('modal-order');
     if (!modal) return;
     modal.classList.remove('active');
+<<<<<<< HEAD
+=======
+    const overlay = modal.querySelector('.modal-overlay');
+    const content = modal.querySelector('.modal-content');
+    if (overlay) overlay.style.zIndex = '';
+    if (content) content.style.zIndex = '';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
     setTimeout(() => {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }, 300);
 }
 
+<<<<<<< HEAD
 function closeSourceModal(btn) {
     const wineId = btn.dataset.wineId || btn.getAttribute('data-wine-id') || null;
     if (wineId) {
@@ -999,3 +1123,157 @@ function attachOrderModalHandlers() {
 }
 
 attachOrderModalHandlers();
+=======
+// Populate select and wire buy buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('orderSelect');
+    if (select && typeof wineData === 'object') {
+        Object.keys(wineData).forEach(id => {
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.textContent = wineData[id].title || `Wine ${id}`;
+            select.appendChild(opt);
+        });
+
+        function getOrderImageElement() {
+            return document.getElementById('order-wine-img') || document.getElementById('orderModalImg') || document.querySelector('#modal-order .modal-left img');
+        }
+
+        select.addEventListener('change', (e) => {
+            const id = e.target.value;
+            const img = getOrderImageElement();
+            const nameP = document.getElementById('orderProductName');
+            const hidden = document.getElementById('orderProduct');
+            if (wineData[id]) {
+                if (wineData[id].image && img) img.src = wineData[id].image;
+                nameP.textContent = wineData[id].title;
+                hidden.value = wineData[id].title;
+            } else {
+                nameP.textContent = select.options[select.selectedIndex].textContent;
+                hidden.value = nameP.textContent;
+            }
+        });
+    }
+
+    // Fixed handler: scope image & title lookup to the clicked button's nearest container (.modal-content or .wine-card)
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-buy, .btn-buy-now');
+        if (!btn) return;
+
+        // Ignore clicks inside order modal itself
+        if (btn.closest('#modal-order')) return;
+
+        e.preventDefault();
+
+        // 1) Determine the nearest container for this button (prefer modal-content)
+        let currentCard = btn.closest('.modal-content') || btn.closest('.region-modal') || btn.closest('.modal') || btn.closest('.wine-card');
+
+        // 2) Find image only inside that container
+        let imgEl = null;
+        if (currentCard) {
+            imgEl = currentCard.querySelector('.modal-background img, .wine-image img, img');
+        }
+
+        let imgSrc = '';
+        if (imgEl) imgSrc = imgEl.src || imgEl.getAttribute('src') || '';
+        if (!imgSrc) imgSrc = btn.dataset.img || btn.getAttribute('data-img') || '';
+
+        // 3) Find name/title only inside that container
+        let wineName = '';
+        if (currentCard) {
+            const titleEl = currentCard.querySelector('h1, h2, .modal-region-title, .modal-title, .wine-title, h3');
+            if (titleEl) wineName = titleEl.textContent.trim();
+        }
+        wineName = wineName || btn.dataset.name || btn.dataset.wineName || btn.getAttribute('data-name') || '';
+
+        // 4) wine id (if any)
+        let wineId = btn.dataset.wineId || btn.getAttribute('data-wine-id') || null;
+        if (!wineId && currentCard && currentCard.id) {
+            const m = currentCard.id.match(/modal-(\d+)/);
+            if (m) wineId = m[1];
+        }
+
+        console.log('Клік по вину:', wineName);
+        console.log('Знайдено фото:', imgSrc);
+
+        // 5) Close source modal if it is a modal
+        if (wineId) closeModal(wineId);
+        else if (currentCard && (currentCard.classList.contains('region-modal') || currentCard.classList.contains('modal') || currentCard.classList.contains('modal-content'))) {
+            const parentModal = currentCard.closest('.region-modal') || currentCard.closest('.modal');
+            if (parentModal) {
+                parentModal.classList.remove('active');
+                setTimeout(() => { parentModal.style.display = 'none'; }, 300);
+            }
+        }
+
+        // 6) Open order modal
+        openOrderModal();
+
+        // 7) Insert image into prepared tag
+        const orderImg = document.getElementById('order-wine-img') || document.getElementById('orderModalImg') || document.querySelector('#modal-order .modal-left img');
+        if (orderImg) {
+            if (imgSrc) orderImg.src = imgSrc;
+            else if (wineId && wineData[wineId] && wineData[wineId].image) orderImg.src = wineData[wineId].image;
+            else {
+                orderImg.removeAttribute('src');
+                console.warn('Не вдалося знайти зображення у попередньому вікні!');
+            }
+        }
+
+        // 8) Select / input selection
+        const orderModal = document.getElementById('modal-order');
+        const select = document.getElementById('orderSelect') || (orderModal ? orderModal.querySelector('select[name="product_id"], select[name="wine_name"], select') : null);
+        const orderNameEl = document.getElementById('orderProductName') || (orderModal ? orderModal.querySelector('.order-product-name') : null);
+        const hiddenInput = document.getElementById('orderProduct') || (orderModal ? orderModal.querySelector('input[name="product_name"]') : null);
+
+        let optionFound = false;
+        if (select) {
+            if (wineId) {
+                const opt = Array.from(select.options).find(o => o.value === String(wineId));
+                if (opt) { select.value = String(wineId); optionFound = true; }
+            }
+
+            if (!optionFound && wineName) {
+                const opt = Array.from(select.options).find(o => o.textContent.includes(wineName));
+                if (opt) { select.value = opt.value; optionFound = true; }
+            }
+
+            if (!optionFound && wineName) {
+                const tmp = document.createElement('option');
+                tmp.value = wineId ? String(wineId) : wineName;
+                tmp.textContent = wineName;
+                select.appendChild(tmp);
+                select.value = tmp.value;
+            }
+
+            select.dispatchEvent(new Event('change'));
+        }
+
+        if (orderNameEl) orderNameEl.textContent = wineName || (select && select.options[select.selectedIndex] ? select.options[select.selectedIndex].textContent : '');
+        if (hiddenInput) hiddenInput.value = wineName || (select && select.options[select.selectedIndex] ? select.options[select.selectedIndex].textContent : '');
+
+        // focus name input
+        const nameField = document.getElementById('orderName'); if (nameField) nameField.focus();
+    });
+
+    // Keep hidden input synced if select changes (backup)
+    const selectEl2 = document.getElementById('orderSelect');
+    if (selectEl2) {
+        selectEl2.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const orderNameEl = document.getElementById('orderProductName');
+            const hiddenInput = document.getElementById('orderProduct');
+            if (wineData[val]) {
+                orderNameEl.textContent = wineData[val].title;
+                hiddenInput.value = wineData[val].title;
+                const orderImg = document.getElementById('orderModalImg');
+                if (orderImg && wineData[val].image) orderImg.src = wineData[val].image;
+            } else {
+                const text = e.target.options[e.target.selectedIndex].textContent;
+                orderNameEl.textContent = text;
+                hiddenInput.value = text;
+            }
+        });
+    }
+});
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7

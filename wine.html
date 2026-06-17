@@ -195,6 +195,31 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
+=======
+                <!-- Вино 11 -->
+                <div class="wine-card" data-category="червоне" onclick="openModal(11)">
+                    <div class="wine-image">
+                        <img src="wine11.jpg" alt="Wine 11">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Назва вина 11</h3>
+                        <p class="wine-type">Тип вина</p>
+                    </div>
+                </div>
+
+                <!-- Вино 12 -->
+                <div class="wine-card" data-category="червоне" onclick="openModal(12)">
+                    <div class="wine-image">
+                        <img src="wine12.jpg" alt="Wine 12">
+                    </div>
+                    <div class="wine-info">
+                        <h3>Назва вина 12</h3>
+                        <p class="wine-type">Тип вина</p>
+                    </div>
+                </div>
+
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                 <!-- Вино 13 -->
                 <div class="wine-card" data-category="ігристе" onclick="openModal(13)">
                     <div class="wine-image">
@@ -241,8 +266,13 @@
 
                 <!-- Вино 17 -->
                 <div class="wine-card" data-category="кріплене червоне" onclick="openModal(17)">
+<<<<<<< HEAD
                     <div class="wine-image">
                         <img src="img1/Penfolds 50 Year Old Rare Tawny.jpg" alt="Wine 17">
+=======
+                    <div class="img1/Penfolds 50 Year Old Rare Tawny.jpg">
+                        <img src="" alt="Wine 17">
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                     </div>
                     <div class="wine-info">
                         <h3>Penfolds 50 Year Old Rare Tawny</h3>
@@ -345,6 +375,7 @@
     <!-- Глобальне модальне вікно для оформлення замовлення -->
     <div class="region-modal" id="modal-order" style="display:none;">
         <div class="modal-overlay" onclick="closeOrderModal()"></div>
+<<<<<<< HEAD
         <div class="modal-content order-modal-content">
             <button class="modal-close" onclick="closeOrderModal()">&times;</button>
 
@@ -455,6 +486,57 @@
                         <div class="final-price">Ви повинні заплатити <strong id="receiptFinalAmount">₴ 0 UAH</strong></div>
                     </div>
                 </div>
+=======
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+
+            <div class="modal-left">
+                <img id="order-wine-img" src="" alt="Selected Wine" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div class="modal-info">
+                <h2 class="modal-region-title">Оформлення замовлення</h2>
+                <div class="modal-description">
+                    <p id="orderProductName" class="order-product-name"></p>
+                </div>
+
+                <form id="orderForm" class="order-form">
+                    <input type="hidden" id="orderProduct" name="product_name" />
+
+                    <div class="form-group">
+                        <label for="orderSelect" class="form-label">Виберіть товар</label>
+                        <select id="orderSelect" name="product_select" class="form-control">
+                            <!-- Заповнюється динамічно -->
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderQuantity" class="form-label">Кількість</label>
+                        <input type="number" id="orderQuantity" name="quantity" value="1" min="1" class="form-control short">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderName" class="form-label">Ім'я</label>
+                        <input type="text" id="orderName" name="customer_name" required class="form-control">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderEmail" class="form-label">Email</label>
+                        <input type="email" id="orderEmail" name="email" required class="form-control">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="orderPhone" class="form-label">Телефон</label>
+                        <input type="text" id="orderPhone" name="phone" required class="form-control">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="orderSubmit" class="btn-buy">Оформити замовлення</button>
+                    </div>
+                </form>
+
+                <div id="orderMessage" class="order-message" style="display:none;"></div>
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
             </div>
         </div>
     </div>
@@ -701,6 +783,59 @@
         </div>
     </div>
 
+<<<<<<< HEAD
+=======
+    <!-- Модальне вікно 11 -->
+    <div class="region-modal" id="modal-11">
+        <div class="modal-overlay" onclick="closeModal(11)"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal(11)">&times;</button>
+            <div class="modal-background">
+                <img src="wine11.jpg" alt="Wine 11">
+            </div>
+            <div class="modal-info">
+                <h2 class="modal-region-title">Назва вина 11</h2>
+                <h3 class="modal-winemaker">Виробник <span class="modal-years">(рік – донині)</span></h3>
+                <p class="modal-vineyards">Тип вина <span class="modal-dots">................</span></p>
+                <p class="modal-subtitle">Опис</p>
+                <div class="modal-description">
+                    <p>Цей винарник готується до доповнення.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-price">ЦІНА: 700 ₴</div>
+                    <button class="btn-buy">КУПИТИ</button>
+                    <button class="like-btn" data-id="11" data-name="Назва вина 11" data-img="img1/wine11.jpg">❤️ Уподобати</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно 12 -->
+    <div class="region-modal" id="modal-12">
+        <div class="modal-overlay" onclick="closeModal(12)"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal(12)">&times;</button>
+            <div class="modal-background">
+                <img src="wine12.jpg" alt="Wine 12">
+            </div>
+            <div class="modal-info">
+                <h2 class="modal-region-title">Назва вина 12</h2>
+                <h3 class="modal-winemaker">Виробник <span class="modal-years">(рік – донині)</span></h3>
+                <p class="modal-vineyards">Тип вина <span class="modal-dots">................</span></p>
+                <p class="modal-subtitle">Опис</p>
+                <div class="modal-description">
+                    <p>Цей винарник готується до доповнення.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-price">ЦІНА: 880 ₴</div>
+                    <button class="btn-buy">КУПИТИ</button>
+                    <button class="like-btn" data-id="12" data-name="Назва вина 12" data-img="img1/wine12.jpg">❤️ Уподобати</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
     <!-- Модальне вікно 13: Louis Roederer Cristal -->
     <div class="region-modal" id="modal-13">
         <div class="modal-overlay" onclick="closeModal(13)"></div>

@@ -226,6 +226,7 @@ body {
     font-weight: 600;
 }
 
+<<<<<<< HEAD
 /* Profile Card */
 .profile-container {
     display: flex;
@@ -342,6 +343,69 @@ body {
     color: #ffe99e;
     border-top: 1px solid rgba(212, 175, 55, 0.18);
     padding-top: 16px;
+=======
+/* Form */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #B8860B;
+}
+
+.form-group input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    border-radius: 6px;
+    padding: 1rem;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #B8860B;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(184, 134, 11, 0.2);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #B8860B, #D4AF37);
+    color: #000;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(184, 134, 11, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 }
 
 /* Footer */

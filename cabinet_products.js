@@ -238,9 +238,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (noFav) noFav.style.display = 'none';
 
         items.forEach(item => {
+<<<<<<< HEAD
             // Use wine-card / product-card markup so layout matches the main wine page, include data-id on product button
             const card = document.createElement('div');
             card.className = 'wine-card product-card';
+=======
+            // Use wine-card markup so layout matches the main wine page, include data-id on product button
+            const card = document.createElement('div');
+            card.className = 'wine-card';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
             card.innerHTML = `
                 <div class="wine-image">
                     <img src="${item.img}" alt="${item.name}">
@@ -249,8 +255,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${item.name}</h3>
                     <p class="wine-type">${item.price ? item.price : ''}</p>
                     <div class="product-actions">
+<<<<<<< HEAD
                         <button class="product-btn" data-id="${item.product_id}">ПЕРЕГЛЯНУТИ ТОВАР</button>
                         <button class="buy-btn" data-id="${item.product_id}" data-price="${item.price ? item.price : ''}" data-name="${item.name}">КУПИТИ</button>
+=======
+                        <button class="product-btn" data-id="${item.product_id}">ПЕРЕГЛЯНУТИ ПРОДУКТ</button>
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                         <button class="remove-btn remove-fav" data-id="${item.product_id}">ВИДАЛИТИ</button>
                     </div>
                 </div>
@@ -298,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+<<<<<<< HEAD
         // Підключаємо обробники для кнопки "КУПИТИ"
         document.querySelectorAll('.buy-btn').forEach(btn => {
             btn.addEventListener('click', function(event) {
@@ -320,6 +331,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+=======
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
 
     }
 

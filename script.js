@@ -164,10 +164,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.className = 'user-btn';
                 el.textContent = userName;
                 if (tagName.toLowerCase() === 'a') {
+<<<<<<< HEAD
                     el.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
                 } else {
                     el.addEventListener('click', () => {
                         window.location.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
+=======
+                    el.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+                } else {
+                    el.addEventListener('click', () => {
+                        window.location.href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                     });
                 }
                 el.title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
@@ -883,11 +890,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     loginForm.reset();
+<<<<<<< HEAD
 
                     // Перенаправлення в кабінет після успіху
                     setTimeout(() => {
                         window.location.href = 'cabinet.php';
                     }, 1500);
+=======
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -964,11 +974,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Очищення форми
                     registerForm.reset();
+<<<<<<< HEAD
 
                     // Перенаправлення в кабінет після успіху
                     setTimeout(() => {
                         window.location.href = 'cabinet.php';
                     }, 1500);
+=======
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
                 } else {
                     showNotification(result.message, 'error');
                 }
@@ -1030,7 +1043,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let replaced = false;
 
         // choose destination based on role
+<<<<<<< HEAD
         const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.php';
+=======
+        const href = (role === 'admin') ? 'admin_panel.html' : 'cabinet.html';
+>>>>>>> b6dc5c465b1ae884508b84857056fd94603946e7
         const title = (role === 'admin') ? 'Перейти до панелі адміністратора' : 'Перейти до кабінету користувача';
 
         selectors.forEach(sel => {
