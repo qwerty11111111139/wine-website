@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dionysus Cellar - Винна Колекція</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="about.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Dionysus Cellar</div>
+        <div class="header-center">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Головна</a></li>
+                    <li><a href="wine.html">Вино</a></li>
+                    <li><a href="about.html">Про нас</a></li>
+                    <li><a href="Contacts.html">Контакти</a></li>
+                </ul>
+            </nav>
+            <div class="header-divider"></div>
+        </div>
+        <div class="header-actions">
+            <form id="headerSearchForm" class="header-search-form" role="search">
+                <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                <button type="submit" class="header-search-btn" aria-label="Пошук">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </form>
+            <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">Luxury Wine Collectors</p>
+            <h1 class="hero-title">Наша історія, наша пристрасть</h1>
+            <p class="hero-description">Від стародавніх традицій до досконалості смородіння</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">Земля, що творить магію</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Земля, що творить магію</h3>
+                <p>Тут, де південне сонце цілує лозу, а вітер овіває схили, народжується істина. Наші виноградники розкинулися на унікальних землях, багатих на мінерали та історію. Саме цей особливий склад ґрунту дарує винам Dionysus Cellar той самий глибокий, насичений характер, який неможливо відтворити в жодному іншому куточку світу.</p>
+                <p>Ми віримо, що велике вино починається не в погребі, а на винограднику. Кожна лоза доглядається вручну, з повагою до циклів природи. Ми не приборкуємо стихію, а співпрацюємо з нею, дозволяючи землі передати свою енергію в кожну ягоду, щоб згодом вона розкрилася у вашому келиху</p>
+            </div>
+            <div class="about-image" data-image="1">
+                <!-- Вставте своє зображення тут -->
+                <img src="img1/vynohradnyk.jpg" alt="Виноградник">
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section">
+        <h2 class="section-title">Руки, що творять магію</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-image="2">
+                <!-- Вставте своє зображення тут -->
+                <img src="img1/vynohrad v rukakh.jpg" alt="Збір врожаю">
+            </div>
+            <div class="gallery-item" data-image="3">
+                <!-- Вставте своє зображення тут -->
+                <img src="img1/korzyna z vynohradom (1).jpg" alt="Виноград">
+            </div>
+            <div class="gallery-item" data-image="4">
+                <!-- Вставте своє зображення тут -->
+                <img src="img1/bochka z vynom.jpg" alt="Бочки">
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section" id="values">
+        <h2 class="section-title">Наші цінності</h2>
+        <div class="values-grid">
+            <div class="value-item">
+                <div class="value-icon">✦</div>
+                <h3 class="value-title">Дотримання Традицій</h3>
+                <p class="value-description">Бездоганна якість.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🍷</div>
+                <h3 class="value-title">Вічна Якість</h3>
+                <p class="value-description">Краса, створена в гармонії.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🏛</div>
+                <h3 class="value-title">Висока Якість</h3>
+                <p class="value-description">Високоякісне вино.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🔒</div>
+                <h3 class="value-title">Ексклюзивність</h3>
+                <p class="value-description">Природне вино з природи.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="section-title">Відкрийте нашу колекцію</h2>
+        <p style="color: #b0b0b0; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+           Дослідіть асортимент вин, створених з любов'ю та майстерністю, що відображають унікальний характер нашого терруару
+        </p>
+        <a href="wine.html" class="cta-button">До Колекції</a>
+    </section>
+
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+                
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="about.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

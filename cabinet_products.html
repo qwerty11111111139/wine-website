@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мій кабінет - Dionysus Cellar</title>
+    <link rel="stylesheet" href="cabinet_products.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>DIONYSUS CELLAR</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">ГОЛОВНА</a>
+                <a href="wine.html">ВИНА</a>
+                <a href="about.html">ПРО НАС</a>
+                <a href="Contacts.html">КОНТАКТИ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">ВІТАЄМО В ОСОБИСТОМУ КАБІНЕТІ</p>
+            <h1 class="hero-title">Мій кабінет</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Left Sidebar - Menu -->
+            <aside class="sidebar">
+                <a href="cabinet.html" class="sidebar-link" data-section="profile">
+                    <span class="link-icon">👤</span>
+                    <span class="link-text">ОСОБИСТІ ДАНІ</span>
+                </a>
+                <nav class="sidebar-nav">
+                    <!-- Тут вставляй свої посилання -->
+                    <a href="cabinet_Order_history.html" class="sidebar-link" data-section="orders">
+                        <span class="link-icon">📦</span>
+                        <span class="link-text">ІСТОРІЯ ЗАМОВЛЕНЬ</span>
+                    </a>
+                    <a href="cabinet_products.html" class="sidebar-link" data-section="favorites">
+                        <span class="link-icon">❤️</span>
+                        <span class="link-text">ОБРАНЕ</span>
+                    </a>
+                    
+                    <a href="settings.html" class="sidebar-link" data-section="settings">
+                        <span class="link-icon">⚙️</span>
+                        <span class="link-text">НАЛАШТУВАННЯ</span>
+                    </a>
+                    
+                    <a href="logout.php" class="sidebar-link">
+                        <span class="link-icon">🚪</span>
+                        <span class="link-text">Вихід</span>
+                    </a>
+                </nav>
+            </aside>
+
+
+            <!-- Right Content - Products Grid -->
+            <section class="content-section">
+                <h2 class="section-title">Уподобані товари</h2>
+                <div class="products-grid" id="favorites-grid">
+                    <!-- Тут будуть динамічно завантажені уподобані товари -->
+                </div>
+                <div id="no-favorites" class="no-favorites" style="display: none;">
+                    <p>У вас поки що немає уподобаних товарів.</p>
+                    <a href="wine.html" class="btn-primary">Переглянути колекцію вин</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>DIONYSUS CELLAR</h2>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Facebook">f</a>
+                <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                <a href="#" class="social-link" aria-label="YouTube">▶</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cabinet_products.js"></script>
+</body>
+</html>

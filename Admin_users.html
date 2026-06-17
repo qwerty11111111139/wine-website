@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адмін — Користувачі</title>
+    <link rel="stylesheet" href="admin_panel.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>Адмін Панель</h2>
+            </div>
+            <nav class="admin-nav">
+                <a href="admin_panel.html" class="nav-item" data-section="recipes">
+                    <span class="nav-icon">🍇</span>
+                    <span class="nav-text">Керування винами</span>
+                </a>
+                <a href="Wine_admin.html" class="nav-item" data-section="wines">
+                    <span class="nav-icon">🍷</span>
+                    <span class="nav-text">Вина</span>
+                </a>
+                <a href="Admin_add_product.html" class="nav-item" data-section="add-product">
+                    <span class="nav-icon">➕</span>
+                    <span class="nav-text">Додати вино</span>
+                </a>
+                <a href="Admin_order.html" class="nav-item" data-section="orders">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Замовлення</span>
+                </a>
+                <a href="Admin_users.html" class="nav-item" data-section="users">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Користувачі</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Налаштування</span>
+                </a>
+                <a href="logout.php" id="adminLogoutBtn" class="nav-item">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Вихід</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="page-title">Користувачі</h1>
+            </header>
+
+            <section class="content-section">
+                <div class="table-container">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ім'я</th>
+                                <th>Email</th>
+                                <th>Телефон</th>
+                                <th>Роль</th>
+                                <th>Дата реєстрації</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Користувачі будуть завантажені через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="admin_panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мій кабінет - Dionysus Cellar</title>
+    <link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>DIONYSUS CELLAR</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">ГОЛОВНА</a>
+                <a href="wine.html">ВИНА</a>
+                <a href="about.html">ПРО НАС</a>
+                <a href="Contacts.html">КОНТАКТИ</a>
+            </nav>            <form id="headerSearchForm" class="header-search-form" role="search">
+                <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                <button type="submit" class="header-search-btn" aria-label="Пошук">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </form>        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">ВІТАЄМО В ОСОБИСТОМУ КАБІНЕТІ</p>
+            <h1 class="hero-title">Мій кабінет</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Left Sidebar - Menu -->
+            <aside class="sidebar">
+                <a href="cabinet.html" class="sidebar-link active" data-section="profile" aria-current="page">
+                    <span class="link-icon">👤</span>
+                    <span class="link-text">ОСОБИСТІ ДАНІ</span>
+                </a>
+                <nav class="sidebar-nav">
+                    <!-- Тут вставляй свої посилання -->
+                    <a href="cabinet_Order_history.html" class="sidebar-link" data-section="orders">
+                        <span class="link-icon">📦</span>
+                        <span class="link-text">ІСТОРІЯ ЗАМОВЛЕНЬ</span>
+                    </a>
+                    <a href="cabinet_products.html" class="sidebar-link" data-section="favorites">
+                        <span class="link-icon">❤️</span>
+                        <span class="link-text">ОБРАНЕ</span>
+                    </a>
+                    
+                    <a href="settings.html" class="sidebar-link" data-section="settings">
+                        <span class="link-icon">⚙️</span>
+                        <span class="link-text">НАЛАШТУВАННЯ</span>
+                    </a>
+                    
+                    <a href="logout.php" class="sidebar-link">
+                        <span class="link-icon">🚪</span>
+                        <span class="link-text">Вихід</span>
+                    </a> 
+                </nav>
+            </aside>
+
+            <!-- Right Content - Form -->
+            <section class="content-section">
+                <h3 class="section-title">ОСОБИСТІ ДАНІ</h3>
+                
+                <form class="user-form" id="userForm">
+                    <div class="form-group">
+                        <label for="name">Ваше ім'я</label>
+                        <input type="text" id="name" name="name" placeholder="Ім'я" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Електронна пошта</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+380 888 888 8888" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">ЗБЕРЕГТИ ЗМІНИ</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>DIONYSUS CELLAR</h2>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Facebook">f</a>
+                <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+    <script src="cabinet.js"></script>
+</body>
+</html>

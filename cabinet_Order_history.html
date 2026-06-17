@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Історія замовлень - Dionysus Cellar</title>
+    <link rel="stylesheet" href="cabinet_Order_history.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>DIONYSUS CELLAR</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">ГОЛОВНА</a>
+                <a href="wine.html">ВИНА</a>
+                <a href="about.html">ПРО НАС</a>
+                <a href="Contacts.html">КОНТАКТИ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">ВІТАЄМО В ОСОБИСТОМУ КАБІНЕТІ</p>
+            <h1 class="hero-title">Історія замовлень</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Left Sidebar - Menu -->
+            <aside class="sidebar-menu">
+                <div class="menu-card">
+                    <a href="cabinet.html" class="menu-title profile-link">ОСОБИСТІ ДАНІ</a>
+                    
+                    <nav class="menu-nav">
+                        <!-- Історія замовлень - активна -->
+                        <a href="cabinet_Order_history.html" class="menu-link active">
+                            <span class="menu-icon">📦</span>
+                            <span class="menu-text">ІСТОРІЯ ЗАМОВЛЕНЬ</span>
+                        </a>
+                        
+                        <!-- Обране -->
+                        <a href="cabinet_products.html" class="menu-link">
+                            <span class="menu-icon">💖</span>
+                            <span class="menu-text">ОБРАНЕ</span>
+                        </a>
+                        
+                        <!-- Налаштування -->
+                        <a href="settings.html" class="menu-link">
+                            <span class="menu-icon">⚙️</span>
+                            <span class="menu-text">НАЛАШТУВАННЯ</span>
+                        </a>
+                        
+                        <!-- Вийти -->
+                        <a href="logout.php" class="menu-link">
+                            <span class="menu-icon">🚪</span>
+                            <span class="menu-text">Вихід</span>
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Right Content - Empty State -->
+            <section class="content-section">
+                <div class="empty-state">
+                    <div class="empty-icon">📦</div>
+                    <h2 class="empty-title">Історія замовлень порожня</h2>
+                    <p class="empty-description">
+                        У вас поки що немає жодного замовлення.<br>
+                        Перегляньте наш каталог вин та зробіть своє перше замовлення.
+                    </p>
+                    <a href="wine.html" class="catalog-btn">ПЕРЕГЛЯНУТИ КАТАЛОГ</a>
+                </div>
+
+                <!-- Контейнер для майбутніх замовлень (буде заповнюватись через JS/БД) -->
+                <div id="ordersContainer" class="orders-list" style="display: none;">
+                    <!-- Сюди будуть додаватись замовлення з бази даних -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>DIONYSUS CELLAR</h2>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-link" aria-label="Facebook">f</a>
+                <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                <a href="#" class="social-link" aria-label="YouTube">▶</a>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+    <script src="cabinet_Order_history.js"></script>
+</body>
+</html>

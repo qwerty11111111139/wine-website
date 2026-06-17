@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dionysus Cellar - Винна країна</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        // SECURITY: Force logout and clear any stored session data immediately when homepage loads
+        try {
+            // Clear any local/session storage to disable auto-login
+            localStorage.clear();
+            sessionStorage.clear();
+            ['isLoggedIn','userToken','userData','user_id','adminToken','isAdmin','wineFavorites'].forEach(k => localStorage.removeItem(k));
+        } catch (e) {
+            console.warn('Could not clear storage on page load', e);
+        }
+        // Attempt server-side logout to ensure PHP session is destroyed (best-effort)
+        try {
+            fetch('api.php?action=logout', { method: 'GET', credentials: 'same-origin' }).catch(()=>{});
+        } catch (e) {}
+    </script>
+
+    <!-- Навігаційна панель -->
+    <header class="header">
+        <nav class="nav-container">
+            <!-- Логотип -->
+            <div class="logo">DIONYSUS  CELLAR</div>
+            
+            <!-- Навігаційне меню -->
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">ГОЛОВНА</a></li>
+                <li><a href="wine.html" class="nav-link">ВИНО</a></li>
+                <li><a href="about.html" class="nav-link">ПРО НАС</a></li>
+                <li><a href="Contacts.html" class="nav-link">КОНТАКТИ</a></li>
+            </ul>    
+            <!-- Права частина навігації: пошук та кнопка входу -->
+            <div class="nav-actions">
+                <form id="headerSearchForm" class="header-search-form" role="search">
+                    <input type="search" id="headerSearchInput" class="header-search-input" placeholder="Пошук товарів..." aria-label="Пошук товарів">
+                    <button type="submit" class="header-search-btn" aria-label="Пошук">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </form>
+                <button class="login-btn" id="loginBtn" data-modal="login">УВІЙТИ</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Головний банер -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-subtitle">LUXURY WINE COLLECTIONS</span>
+            <h1 class="hero-title">Винна країна</h1>
+            <p class="hero-description">
+                Відкрийте для себе найкращий вибір марочних вин із<br>
+                серед найвідоміших виноградників світу.
+            </p>
+        </div>
+    </section>
+
+    <!-- Секція філософії виноробства -->
+    <section class="philosophy-section">
+        <h2 class="section-title">Філософія виноробства</h2>
+        
+        <div class="philosophy-cards">
+            <!-- Карточка 1: Виноградники -->
+            <div class="philosophy-card">
+                <div class="card-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="12" r="4" fill="#D4AF37"/>
+                        <circle cx="18" cy="20" r="4" fill="#D4AF37"/>
+                        <circle cx="30" cy="20" r="4" fill="#D4AF37"/>
+                        <circle cx="24" cy="28" r="4" fill="#D4AF37"/>
+                        <circle cx="18" cy="36" r="4" fill="#D4AF37"/>
+                        <circle cx="30" cy="36" r="4" fill="#D4AF37"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Виноградники</h3>
+                <p class="card-description">Sourced from the finest organic soils.</p>
+            </div>
+
+            <!-- Карточка 2: Винний магазин -->
+            <div class="philosophy-card">
+                <div class="card-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M20 8h8v6l4 10v16a2 2 0 01-2 2H18a2 2 0 01-2-2V24l4-10V8z" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Винний магазин</h3>
+                <p class="card-description">Ексклюзивна колекція для цінителів</p>
+            </div>
+
+            <!-- Карточка 3: Наш магазин -->
+            <div class="philosophy-card">
+                <div class="card-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <path d="M8 18h32v20a2 2 0 01-2 2H10a2 2 0 01-2-2V18z" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                        <path d="M6 18l4-8h28l4 8" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                        <rect x="20" y="26" width="8" height="12" stroke="#D4AF37" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Наш магазин</h3>
+                <p class="card-description">Завітайте до нас</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція ідеальних червоних вин -->
+    <section class="wine-showcase red-wine">
+        <div class="showcase-container">
+            <div class="showcase-image">
+                <img src="img1/Chervone vyno Teliani Valley.jpg" alt="Червоне вино">
+            </div>
+            
+            <div class="showcase-content">
+                <span class="showcase-label">SINCE 1995</span>
+                <h2 class="showcase-title">Ідеальні чорні вина</h2>
+                <p class="showcase-description">
+                    Густі, насичені та справжні характеру. Наші чорні вина 
+                    витримуються у французьких дубових бочках, щоб 
+                    забезпечити ідеальний баланс між та оксамитового 
+                    смаку.
+                </p>
+                <a href="#" class="cta-button" data-modal="buy">
+                    КУПИТИ ЗАРАЗ
+                    <span class="button-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція червоного вина К'янті -->
+    <section class="wine-showcase chianti-wine">
+        <div class="showcase-container reverse">
+            <div class="showcase-content">
+                <span class="showcase-label">SINCE 1995</span>
+                <h2 class="showcase-title">Червоне вино К'янті</h2>
+                <p class="showcase-description">
+                    Сміливий характер і містична глибина. Це вино створене з 
+                    найдавніших лоз мастку, розкриваючись багатими 
+                    танінами та травами, оксамитовим фіналом
+                </p>
+                <a href="#" class="cta-button" data-modal="buy">
+               КУПИТИ ЗАРАЗ
+                    <span class="button-arrow">→</span>
+                </a>
+            </div>
+            
+            <div class="showcase-image">
+                <img src="img1/Idealni chorni vyna.jpg" alt="Червоне вино К'янті">
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція наших продуктів -->
+    <section class="products-section">
+        <h2 class="section-title">Наші продукти</h2>
+        
+        <!-- Фільтр категорій -->
+        <div class="product-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="red">Червоне вино</button>
+            <button class="filter-btn" data-filter="white">Біле вино</button>
+            <button class="filter-btn" data-filter="new">Нове Вино</button>
+        </div>
+
+        <!-- Сітка продуктів -->
+        <div class="products-grid">
+            <!-- Продукт 1: Cabernet Sauvignon -->
+            <div class="product-card" data-category="red">
+                <div class="product-image">
+                    <img src="img1/Cabernet Sauvignon.jpg" alt="Cabernet Sauvignon">
+                </div>
+                <h3 class="product-name">Cabernet Sauvignon</h3>
+                <p class="product-origin">Шляхетне червоне</p>
+            </div>
+
+            <!-- Продукт 2: Vie di Romans Chardonnay -->
+            <div class="product-card" data-category="white">
+                <div class="product-image">
+                    <img src="img1/Vie di Romans Chardonnay.jpg" alt="Vie di Romans Chardonnay">
+                </div>
+                <h3 class="product-name">Vie di Romans Chardonnay</h3>
+                <p class="product-origin">Італійське золото</p>
+            </div>
+
+            <!-- Продукт 3: Pavel Shvets -->
+            <div class="product-card" data-category="white">
+                <div class="product-image">
+                    <img src="img1/Pavel Shvets.jpg" alt="Pavel Shvets">
+                </div>
+                <h3 class="product-name">Pavel Shvets</h3>
+                <p class="product-origin">Біодинамічний шедевр</p>
+            </div>
+
+            <!-- Продукт 4: Grand Merlot -->
+            <div class="product-card" data-category="red">
+                <div class="product-image">
+                    <img src="img1/CARNEROS MERLOT.jpg" alt="Carneros merlot">
+                </div>
+                <h3 class="product-name">Grand Merlot</h3>
+                <p class="product-origin">де Великі події</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Club members exclusive wines (hidden by default, will be shown to club members) -->
+    <section id="club-wines-section" class="wine-grid club-only-section" style="display: none;">
+        <h2 class="section-title">Ексклюзивно для учасників клубу</h2>
+        <div class="grid">
+            <!-- Placeholder exclusive cards; JS will replace or populate as needed -->
+            <div class="wine-card">
+                <img src="img1/Romanée-Conti.jpg" alt="Exclusive 1">
+                <div class="modal-info">
+                    <h3>Romanée-Conti (Ексклюзив)</h3>
+                    <p class="price">Ціна: 1 200 000 ₴</p>
+                    <button class="btn-buy" data-wine-name="Romanée-Conti (Ексклюзив)">Купити</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція з виноградниками -->
+    <section class="vineyard-section">
+        <div class="vineyard-overlay"></div>
+        <div class="vineyard-content">
+            <h2 class="vineyard-title">Відкрийте. Скуштуйте. Насолоджуйтесь.</h2>
+            <p class="vineyard-description">
+                Спробуйте те за чином від вино року до молодих вин повсюджа як 
+                традиції, якби ми впірвали.ку виноробстві
+            </p>
+        </div>
+    </section>
+
+    <!-- Секція сонячного вина -->
+    <section class="sunshine-wine-section">
+        <div class="sunshine-container">
+            <div class="sunshine-text">
+                <h2 class="sunshine-title">Сонячне вино<br>Trinchero</h2>
+            </div>
+            
+            <div class="sunshine-image">
+                <img src="img1\Trinchero.jpg" alt="Сонячне вино Trinchero">
+                <div class="price-tag">
+                    <span class="price-old"> ₴ 5000.00</span>
+                    <span class="price-current"> ₴ 3700.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція приватного клубу -->
+    <section class="private-club-section">
+        <div class="club-container">
+            <div class="club-image">
+                <img src="img1/bokal.jpg" alt="Келихи для вина">
+            </div>
+            
+            <div class="club-content">
+                <h2 class="club-title">Приватний Клуб</h2>
+                
+                <div class="club-benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-icon"></div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"></div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"></div>
+                    </div>
+                </div>
+                
+                <p class="club-description">
+                    Доступ до лімітованих серій, закритих дегустацій 
+                    та ексклюзивних вечірок. Приєднуйтесь до коло 
+                    обраних, де вино — це мистецтво, а кожна 
+                    пляшка — шанувань. відкриттів для вас.
+                </p>
+                
+                <a href="#" class="cta-button club-btn" data-modal="invite">
+                    ОТРИМАТИ ЗАПРОШЕННЯ
+                    <span class="button-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секція винних легенд -->
+    <section class="legends-section">
+        <h2 class="section-title">Витоки Легенд</h2>
+        
+        <div class="legends-grid">
+            <!-- Легенда 1: Маєтки Тоскани -->
+            <div class="legend-card">
+                <div class="legend-image">
+                    <img src="img1\Maietky Toskany.jpg" alt="Маєтки Тоскани">
+                </div>
+                <span class="legend-region">ІТАЛІЯ • ТОСКАНА</span>
+                <h3 class="legend-title">Маєтки Тоскани</h3>
+                <p class="legend-description">
+                    Тут, серед вікових кипарисів та залитих сонцем пагорбів, народжується вино з характером.
+                </p>
+                <button class="legend-link" data-region="tuscany">
+                    ДОСЛІДИТИ РЕГІОН
+                    <span class="link-arrow">→</span>
+                </button>
+            </div>
+
+            <!-- Легенда 2: Королівська Спадщина -->
+            <div class="legend-card">
+                <div class="legend-image">
+                    <img src="img1/Korolivska Spadshchyna.jpg" alt="Королівська Спадщина">
+                </div>
+                <span class="legend-region">ФРАНЦІЯ • БОРДО</span>
+                <h3 class="legend-title">Королівська Спадщина</h3>
+                <p class="legend-description">
+                    Величні замки та глибокі льохи, що зберігають таємниці століть.
+                </p>
+                <button class="legend-link" data-region="bordeaux">
+                    ДОСЛІДИТИ РЕГІОН
+                    <span class="link-arrow">→</span>
+                </button>
+            </div>
+
+            <!-- Легенда 3: Сила Старої Лози -->
+            <div class="legend-card">
+                <div class="legend-image">
+                    <img src="img1/Riokha Zolota Kliatva Markiza.jpg" alt="Сила Старої Лози">
+                </div>
+                <span class="legend-region">ІСПАНІЯ • РІОХА</span>
+                <h3 class="legend-title">Сила Старої Лози</h3>
+                <p class="legend-description">
+                    Земля, де палюче сонце гартує лозу, даруючи вину нестримний характер і глибокий темний колір.
+                </p>
+                <button class="legend-link" data-region="rioja">
+                    ДОСЛІДИТИ РЕГІОН
+                    <span class="link-arrow">→</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- МОДАЛЬНІ ВІКНА ДЛЯ РЕГІОНІВ -->
+    
+    <!-- Модальне вікно: Тоскана -->
+    <div class="region-modal legend-modal" id="modal-tuscany">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/Maietky Toskany.jpg" alt="Тоскана фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">МАЄТКИ ТОСКАНИ</h2>
+                
+                <div class="modal-portrait">
+                    <img src="img1/Markiz Nikolia-Oleksandr de Sehiur.jpg" alt="МАРКІЗ НІКОЛИ-ОЛЕКСАНДР ДЕ СЕНЬОР">
+                </div>
+                
+                <h3 class="modal-winemaker">МАРКІЗ НІКОЛИ-ОЛЕКСАНДР ДЕ СЕНЬОР <span class="modal-years">(1697 - 1775)</span></h3>
+                <p class="modal-vineyards">Принц Виноградних Лоз <span class="modal-dots"></span></p>
+                <p class="modal-subtitle">Маєтки Тоскани: Алхімія Залізного Барона</p>
+                
+                <div class="modal-description">
+                    <p>У часи, коли у Версалі плели інтриги, Маркіз де Сегюр творив історію на берегах річки Жиронда. Він володів землями, що сьогодні є іконами виноробства — Лафіт та Латур.</p>
+                    
+                    <p>Легенда свідчить, що сам король Людовік XV, помітивши діамантові гудзики на камзолі Маркіза, запитав про їх походження. Де Сегюр відповів: "Сір, це не діаманти. Це відшліфоване каміння з моїх виноградників".
+Саме він перетворив вино на "рідке золото" Франції. Глибокі підвали його шато зберігають тишу століть. Тут, у темряві, Каберне Совіньйон набуває своєї могутності, стаючи символом влади та безсмертя.</p>
+                    
+                    <p>Відкриваючи цю пляшку, ви п'єте не просто вино — ви торкаєтеся спадщини Короля-Сонця</p>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Модальне вікно: Бордо -->
+    <div class="region-modal legend-modal" id="modal-bordeaux">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1\Korolivska Spadshchyna.jpg" alt="Бордо фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">Маєтки Тоскани: Народження Легенди</h2>
+                
+                <div class="modal-portrait">
+                    <img src="img1\Baron Bettino Rikazoli.jpg" alt="Портрет виноградаря">
+                </div>
+                
+                <h3 class="modal-winemaker"> Барон Беттіно Ріказолі <span class="modal-years"> (1809 – 1880)</span></h3>
+                <p class="modal-vineyards">Алхімія Залізного Барона <span class="modal-dots">................</span></p>
+                <p class="modal-subtitle">Маєтки Тоскани: Алхімія Залізного Барона</p>
+                
+                <div class="modal-description">
+                    <p>Величні замки та глибокі льохи, що зберігають таємниці століть. Вина Бордо — це симфонія смаків, створена майстрами свого діла.</p>
+                    
+                    <p>Герцог де Монфор присвятив своє життя створенню ідеального купажу. Його підвали стали легендою, де кожна пляшка — це витвір мистецтва.</p>
+                    
+                    <p>Традиції Бордо передаються з покоління в покоління, зберігаючи секрети королівського виноробства.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Ріоха -->
+    <div class="region-modal legend-modal" id="modal-rioja">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1\Riokha Zolota Kliatva Markiza.jpg" alt="Ріоха фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">СИЛА СТАРОЇ ЛОЗИ</h2>
+                
+                <div class="modal-portrait">
+                    <img src="img1/Kamilo Urtado de Amezaha.jpg" alt="Портрет виноградаря">
+                </div>
+                
+                <h3 class="modal-winemaker">Каміло Уртадо де Амезага <span class="modal-years">(1827 – 1888)</span></h3>
+                <p class="modal-vineyards">Бунтар Ріохи <span class="modal-dots"></span></p>
+                <p class="modal-subtitle">ЗОЛОТА КЛЯТВА МАРКІЗА</p>
+                
+                <div class="modal-description">
+                    <p>У той час, коли іспанське вино вважали грубим напоєм для селян, Маркіз де Ріскаль кинув виклик традиціям. Проживши роки у Бордо, він повернувся на випалені сонцем землі Ріохи з однією метою: приборкати дикий характер Темпранільо.</p>
+                    
+                    <p>У 1858 році він збудував першу кам'яну "бодегу", де ввів революційний метод витримки. Його вина стали настільки популярними, що їх почали підробляти. У відповідь Маркіз обтягнув кожну пляшку золотою металевою сіткою — символом недоторканності королівського напою.</p>
+                    
+                    <p>Ця сітка стала знаком якості, а його підвали, які називають "Собором", і досі зберігають пляшки 19-го століття. Це вино не просто п'ють — перед ним схиляють голову, як перед стихією вогню, закутою у скло.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Отримати запрошення -->
+    <div class="region-modal" id="modal-invite">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Запрошення фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">ОТРИМАТИ ЗАПРОШЕННЯ</h2>
+                
+                <div class="modal-description">
+                    <p>Приєднуйтесь до ексклюзивного Приватного Клубу Dionysus Cellar. Заповніть форму нижче, і наші спеціалісти розглянуть вашу кандидатуру протягом 48 годин.</p>
+                    
+                    <form class="invite-form" action="./join_club.php" method="post">
+                        <div class="form-group">
+                            <label for="invite-name">Ваше ім'я:</label>
+                            <input type="text" id="invite-name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="invite-email">Email:</label>
+                            <input type="email" id="invite-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="invite-phone">Телефон:</label>
+                            <input type="tel" id="invite-phone" name="phone" required>
+                        </div>
+                        
+
+                        
+                        <div class="form-group">
+                            <label for="message">Чому ви хочете приєднатися?</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Розкажіть про себе..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">НАДІСЛАТИ ЗАЯВКУ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Купити зараз -->
+    <div class="region-modal" id="modal-buy">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/Chervone vyno Teliani Valley.jpg" alt="Купити вино фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">КУПИТИ ЗАРАЗ</h2>
+                
+                <div class="modal-description">
+                    <p>Оберіть бажане вино та заповніть форму для оформлення замовлення. Наші спеціалісти зв'яжуться з вами протягом 24 годин для підтвердження деталей.</p>
+                    
+                    <form id="order-form" class="purchase-form">
+                        <div class="form-group">
+                            <label for="wine-select">Оберіть вино:</label>
+                            <select id="wine-select" name="wine" required>
+                                <option value="">-- Виберіть вино --</option>
+                                <option value="cabernet">Cabernet Sauvignon</option>
+                                <option value="romanee">Romanée-Conti</option>
+                                <option value="petrus">Pétrus</option>
+                                <option value="screaming-eagle">Screaming Eagle</option>
+                                <option value="chateau-margaux">Château Margaux</option>
+                                <option value="lafite">Chateau Lafite Rothshild</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="quantity">Кількість:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Ваше ім'я:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Телефон:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Реєстрація -->
+    <div class="region-modal" id="modal-register">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Реєстрація фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">ЗАРЕЄСТРУВАТИСЯ</h2>
+                
+                <div class="modal-description">
+                    <p>Створіть акаунт для доступу до особистого кабінету.</p>
+                    
+                    <form class="register-form">
+                        <div class="form-group">
+                            <label for="register-name">Ваше ім'я:</label>
+                            <input type="text" id="register-name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-email">Email:</label>
+                            <input type="email" id="register-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-phone">Телефон:</label>
+                            <input type="tel" id="register-phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-password">Пароль:</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-confirm-password">Підтвердіть пароль:</label>
+                            <input type="password" id="register-confirm-password" name="confirmPassword" required>
+                        </div>
+                        
+                        <button type="submit" class="form-submit-btn">ЗАРЕЄСТРУВАТИСЯ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно: Вхід -->
+    <div class="region-modal" id="modal-login">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            
+            <div class="modal-background">
+                <img src="img1/bokal.jpg" alt="Вхід фон">
+            </div>
+            
+            <div class="modal-info">
+                <h2 class="modal-region-title">УВІЙТИ В АКАУНТ</h2>
+                
+                <div class="modal-description">
+                    <p>Введіть ваші дані для входу в особистий кабінет.</p>
+                    
+                    <form class="login-form">
+                        <div class="form-group">
+                            <label for="login-email">Email:</label>
+                            <input type="email" id="login-email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Пароль:</label>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="form-submit-btn">УВІЙТИ</button>
+                            <button type="button" class="form-register-btn" onclick="showRegisterModal()">ЗАРЕЄСТРУВАТИСЯ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секція підписки на розсилку -->
+    <section class="newsletter-section">
+        <h2 class="newsletter-title">Підпишіться на розсилку</h2>
+        
+        <form class="newsletter-form">
+            <input 
+                type="email" 
+                class="newsletter-input" 
+                placeholder="Your Email Address"
+                required
+            >
+            <button type="submit" class="newsletter-btn">ПІДПИСАТИСЬ</button>
+        </form>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">DIONYSUS CELLAR</div>
+            
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 0C4.477 0 0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.879V12.89h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.989C16.343 19.129 20 14.99 20 10c0-5.523-4.477-10-10-10z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 0C7.284 0 6.944.012 5.877.06 4.813.109 4.086.278 3.45.525a4.902 4.902 0 00-1.772 1.153A4.902 4.902 0 00.525 3.45C.278 4.086.109 4.813.06 5.877.012 6.944 0 7.284 0 10s.012 3.056.06 4.123c.049 1.064.218 1.791.465 2.427a4.902 4.902 0 001.153 1.772 4.902 4.902 0 001.772 1.153c.636.247 1.363.416 2.427.465C6.944 19.988 7.284 20 10 20s3.056-.012 4.123-.06c1.064-.049 1.791-.218 2.427-.465a4.902 4.902 0 001.772-1.153 4.902 4.902 0 001.153-1.772c.247-.636.416-1.363.465-2.427.048-1.067.06-1.407.06-4.123s-.012-3.056-.06-4.123c-.049-1.064-.218-1.791-.465-2.427a4.902 4.902 0 00-1.153-1.772A4.902 4.902 0 0016.55.525C15.914.278 15.187.109 14.123.06 13.056.012 12.716 0 10 0zm0 1.802c2.67 0 2.986.01 4.04.058.975.045 1.504.207 1.857.344.466.182.8.399 1.15.748.35.35.566.684.748 1.15.137.353.299.882.344 1.857.048 1.054.058 1.37.058 4.04s-.01 2.986-.058 4.04c-.045.975-.207 1.504-.344 1.857-.182.466-.399.8-.748 1.15-.35.35-.684.566-1.15.748-.353.137-.882.299-1.857.344-1.054.048-1.37.058-4.04.058s-2.986-.01-4.04-.058c-.975-.045-1.504-.207-1.857-.344a3.097 3.097 0 01-1.15-.748 3.097 3.097 0 01-.748-1.15c-.137-.353-.299-.882-.344-1.857-.048-1.054-.058-1.37-.058-4.04s.01-2.986.058-4.04c.045-.975.207-1.504.344-1.857.182-.466.399-.8.748-1.15.35-.35.684-.566 1.15-.748.353-.137.882-.299 1.857-.344 1.054-.048 1.37-.058 4.04-.058z"/>
+                        <path d="M10 13.333a3.333 3.333 0 110-6.666 3.333 3.333 0 010 6.666zm0-8.468a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27zm5.338-.334a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
